@@ -15,6 +15,8 @@
 		629C1A2B23938F5900920687 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 629C1A2923938F5900920687 /* LaunchScreen.storyboard */; };
 		629C1A3623938F5900920687 /* AdventOfCode2019Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A3523938F5900920687 /* AdventOfCode2019Tests.swift */; };
 		629C1A4123938F5900920687 /* AdventOfCode2019UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A4023938F5900920687 /* AdventOfCode2019UITests.swift */; };
+		629C1A50239396A800920687 /* IntFileIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A4F239396A800920687 /* IntFileIterator.swift */; };
+		629C1A522393A34A00920687 /* DayOneLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A512393A34A00920687 /* DayOneLogic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		629C1A3C23938F5900920687 /* AdventOfCode2019UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdventOfCode2019UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		629C1A4023938F5900920687 /* AdventOfCode2019UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventOfCode2019UITests.swift; sourceTree = "<group>"; };
 		629C1A4223938F5900920687 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		629C1A4F239396A800920687 /* IntFileIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntFileIterator.swift; sourceTree = "<group>"; };
+		629C1A512393A34A00920687 /* DayOneLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOneLogic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 		629C1A1D23938F5600920687 /* AdventOfCode2019 */ = {
 			isa = PBXGroup;
 			children = (
+				629C1A4E2393962800920687 /* Day1 */,
 				629C1A1E23938F5600920687 /* AppDelegate.swift */,
 				629C1A2023938F5600920687 /* SceneDelegate.swift */,
 				629C1A2223938F5600920687 /* ContentView.swift */,
@@ -134,6 +139,15 @@
 				629C1A4223938F5900920687 /* Info.plist */,
 			);
 			path = AdventOfCode2019UITests;
+			sourceTree = "<group>";
+		};
+		629C1A4E2393962800920687 /* Day1 */ = {
+			isa = PBXGroup;
+			children = (
+				629C1A4F239396A800920687 /* IntFileIterator.swift */,
+				629C1A512393A34A00920687 /* DayOneLogic.swift */,
+			);
+			path = Day1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,9 +281,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				629C1A50239396A800920687 /* IntFileIterator.swift in Sources */,
 				629C1A1F23938F5600920687 /* AppDelegate.swift in Sources */,
 				629C1A2123938F5600920687 /* SceneDelegate.swift in Sources */,
 				629C1A2323938F5600920687 /* ContentView.swift in Sources */,
+				629C1A522393A34A00920687 /* DayOneLogic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
