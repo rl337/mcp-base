@@ -11,7 +11,7 @@ import Foundation
 
 public struct IntFileIterator: Sequence, IteratorProtocol {
     private var values : Array<Int>
-    private var index: Int
+    private var index: Int?
     
     init(contentsOf file: URL) throws {
         values = Array<Int>();
@@ -25,16 +25,14 @@ public struct IntFileIterator: Sequence, IteratorProtocol {
     }
     
     public mutating func next() -> Int? {
-        if values.count < 1 {
-            return nil
-        }
-
-        if index >= values.count {
+        guard values.count > 0,
+            let index = index,
+            index < values.count else {
             return nil
         }
         
         let result = values[index]
-        index = index + 1
+        self.index = index + 1
         return result
     }
     
@@ -43,11 +41,15 @@ public struct IntFileIterator: Sequence, IteratorProtocol {
             throw IntFileIteratorError.PeekOfEmptyIterator
         }
         
+        guard let index = index else {
+            throw IntFileIteratorError.PeekBeforeNext
+        }
+        
         return values[index]
     }
     
     public enum IntFileIteratorError : Error {
-        case PeekOfEmptyIterator
+        case PeekOfEmptyIterator, PeekBeforeNext
     }
 }
 
