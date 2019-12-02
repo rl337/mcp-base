@@ -9,46 +9,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+
     var body: some View {
-        let currentPath = FileManager.default.currentDirectoryPath
-        let bundlePath = Bundle.main.resourceURL!
-        
-        // let x = FileManager.default.urls(for: ., in: .userDomainMask)
-        var day1InputFile = bundlePath
-
-
-        do {
-         var y = try FileManager.default.contentsOfDirectory(at: day1InputFile, includingPropertiesForKeys: nil, options: .init(arrayLiteral: .includesDirectoriesPostOrder))
-         var z = 4
-        } catch {
+        var output = ""
+        let solutions = SolutionController.getInstance();
+        let elements = solutions.execute()
+        for element in elements {
             
-        }
-
-        
-        //day1InputFile.appendPathComponent("Day1", isDirectory: true)
-        day1InputFile.appendPathComponent("input.txt")
-
-        
-        let i = IntFileIterator(contentsOf: day1InputFile)
-        var sum = 0;
-        for x in i {
-            var xtotal = calculateFuel(ofMass: x)
-            var fuelMass = calculateFuel(ofMass: xtotal)
-            while fuelMass > 0 {
-                xtotal += fuelMass
-                fuelMass = calculateFuel(ofMass: fuelMass)
+            if let label = element.label {
+                output = output + label + ": "
             }
             
-            sum = sum + xtotal
+            if element.isError {
+                output = output + "ERROR! -- "
+            }
+            output = output + element.message + "\n"
         }
-
-        
-        return Text("Hello, World! " + String(sum))
+        return Text(output)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+    var solutions: SolutionController
+
     static var previews: some View {
         ContentView()
     }

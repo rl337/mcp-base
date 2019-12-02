@@ -13,29 +13,29 @@ public struct IntFileIterator: Sequence, IteratorProtocol {
     var values : Array<Int>
     var index: Int
     
-    init(contentsOf file: URL) {
+    init(contentsOf file: URL) throws {
         values = Array<Int>();
-        index = -1
-        do {
-            let raw = try String(contentsOf: file)
-            let rawSplits = raw.split(separator: "\n")
-            for rawSplit in rawSplits {
-                let intValue = Int(String(rawSplit))
-                values.append(intValue!)
-            }
-            
-        } catch {
-            
+        let raw = try String(contentsOf: file)
+        let rawSplits = raw.split(separator: "\n")
+        for rawSplit in rawSplits {
+            let intValue = Int(String(rawSplit))
+            values.append(intValue!)
         }
+        index = 0
     }
     
     public mutating func next() -> Int? {
-        index = index + 1
+        if values.count < 1 {
+            return nil
+        }
+
         if index >= values.count {
             return nil
         }
         
-        return values[index]
+        let result = values[index]
+        index = index + 1
+        return result
     }
     
 }

@@ -26,13 +26,13 @@ class AdventOfCode2019Tests: XCTestCase {
             atomically: false,
             encoding: .utf8
         )
-        var i = IntFileIterator(contentsOf: testFile)
+        var i = try IntFileIterator(contentsOf: testFile)
         XCTAssertEqual(1, i.next()!, "First value should be 1")
         XCTAssertEqual(2, i.next()!, "Second value should be 2")
         XCTAssertEqual(3, i.next()!, "Third value should be 3")
         XCTAssertNil(i.next(), "Should only be 3 values")
 
-        let j = IntFileIterator(contentsOf: testFile)
+        let j = try IntFileIterator(contentsOf: testFile)
         var sum = 0
         for x in j {
             sum = sum + x
@@ -42,11 +42,12 @@ class AdventOfCode2019Tests: XCTestCase {
     }
 
     func testFuelCalculator() {
+        let x = DayOneSolution()
         
-        XCTAssertEqual(2, calculateFuel(ofMass: 12), "mass 12 should have fuel 2")
-        XCTAssertEqual(2, calculateFuel(ofMass: 14), "mass 14 should have fuel 2")
-        XCTAssertEqual(654, calculateFuel(ofMass: 1969), "mass 1969 should have fuel 654")
-        XCTAssertEqual(33583, calculateFuel(ofMass: 100756), "mass 100756 should have fuel 33583")
+        XCTAssertEqual(2, x.calculateFuel(ofMass: 12), "mass 12 should have fuel 2")
+        XCTAssertEqual(2, x.calculateFuel(ofMass: 14), "mass 14 should have fuel 2")
+        XCTAssertEqual(654, x.calculateFuel(ofMass: 1969), "mass 1969 should have fuel 654")
+        XCTAssertEqual(33583, x.calculateFuel(ofMass: 100756), "mass 100756 should have fuel 33583")
     }
 
 }
