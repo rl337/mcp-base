@@ -10,8 +10,8 @@ import Foundation
 
 
 public struct IntFileIterator: Sequence, IteratorProtocol {
-    var values : Array<Int>
-    var index: Int
+    private var values : Array<Int>
+    private var index: Int
     
     init(contentsOf file: URL) throws {
         values = Array<Int>();
@@ -38,4 +38,17 @@ public struct IntFileIterator: Sequence, IteratorProtocol {
         return result
     }
     
+    public func peek() throws -> Int {
+        guard values.count > 0 else {
+            throw IntFileIteratorError.PeekOfEmptyIterator
+        }
+        
+        return values[index]
+    }
+    
+    public enum IntFileIteratorError : Error {
+        case PeekOfEmptyIterator
+    }
 }
+
+
