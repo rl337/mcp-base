@@ -9,7 +9,7 @@
 import XCTest
 @testable import AdventOfCode2019
 
-class AdventOfCode2019Tests: XCTestCase {
+class Day1Tests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
