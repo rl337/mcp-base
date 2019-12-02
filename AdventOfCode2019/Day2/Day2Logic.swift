@@ -43,36 +43,8 @@ class DayTwoSolution : DayOfCodeSolution {
     
     
     public override func execute() -> [UIEntry] {
-        
-        var part1Entry: UIEntry
-        do {
-            let day1Part1Result = try calculatePart1()
-            part1Entry = UIEntry(
-                thatDisplays: String(day1Part1Result),
-                labeledWith: "Part 1"
-            )
-        } catch {
-            part1Entry = UIEntry(
-                thatDisplays: "\(error)",
-                labeledWith: "Part 1",
-                isError: true
-            )
-        }
-        
-        var part2Entry: UIEntry
-        do {
-            let day2Part2Result = try calculatePart2()
-            part2Entry = UIEntry(
-                thatDisplays: String(day2Part2Result),
-                labeledWith: "Part 2"
-            )
-        } catch {
-            part2Entry = UIEntry(
-                thatDisplays: "\(error)",
-                labeledWith: "Part 2",
-                isError: true
-            )
-        }
+        let part1Entry = getEntryForFunction(method: calculatePart1, labeledWith: "Part 1")
+        let part2Entry = getEntryForFunction(method: calculatePart2, labeledWith: "Part 2")
         
         return [
             UIEntry(thatDisplays: "Day 2 Solution"),

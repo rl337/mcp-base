@@ -31,6 +31,23 @@ public class DayOfCodeSolution {
         let bundlePath = Bundle.main.resourceURL!
         return bundlePath.appendingPathComponent(name)
     }
+    
+    func getEntryForFunction(method: () throws -> Int, labeledWith label: String) -> UIEntry {
+        do {
+            let result = try method()
+            return UIEntry(
+                thatDisplays: String(result),
+                labeledWith: label
+            )
+        } catch {
+            return UIEntry(
+                thatDisplays: "\(error)",
+                labeledWith: label,
+                isError: true
+            )
+        }
+    }
+
 }
 
 public class SolutionController {
