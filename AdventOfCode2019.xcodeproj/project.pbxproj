@@ -19,6 +19,10 @@
 		629C1A522393A34A00920687 /* DayOneLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A512393A34A00920687 /* DayOneLogic.swift */; };
 		629C1A572393B04300920687 /* Day1Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 629C1A562393B04300920687 /* Day1Input.txt */; };
 		629C1A59239434E600920687 /* DayOfCodeSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A58239434E600920687 /* DayOfCodeSolution.swift */; };
+		629C1A5C2394E00200920687 /* Day2Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 629C1A5B2394E00200920687 /* Day2Input.txt */; };
+		629C1A5E2394E02700920687 /* Day2Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A5D2394E02700920687 /* Day2Logic.swift */; };
+		629C1A602394E10200920687 /* IntCodeMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A5F2394E10200920687 /* IntCodeMachine.swift */; };
+		629C1A622394E56A00920687 /* Day2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A612394E56A00920687 /* Day2Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,10 @@
 		629C1A512393A34A00920687 /* DayOneLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOneLogic.swift; sourceTree = "<group>"; };
 		629C1A562393B04300920687 /* Day1Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day1Input.txt; sourceTree = "<group>"; };
 		629C1A58239434E600920687 /* DayOfCodeSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfCodeSolution.swift; sourceTree = "<group>"; };
+		629C1A5B2394E00200920687 /* Day2Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day2Input.txt; sourceTree = "<group>"; };
+		629C1A5D2394E02700920687 /* Day2Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day2Logic.swift; sourceTree = "<group>"; };
+		629C1A5F2394E10200920687 /* IntCodeMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntCodeMachine.swift; sourceTree = "<group>"; };
+		629C1A612394E56A00920687 /* Day2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day2Tests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +115,7 @@
 		629C1A1D23938F5600920687 /* AdventOfCode2019 */ = {
 			isa = PBXGroup;
 			children = (
+				629C1A5A2394DFB000920687 /* Day2 */,
 				629C1A4E2393962800920687 /* Day1 */,
 				629C1A1E23938F5600920687 /* AppDelegate.swift */,
 				629C1A2023938F5600920687 /* SceneDelegate.swift */,
@@ -133,6 +142,7 @@
 			children = (
 				629C1A3523938F5900920687 /* AdventOfCode2019Tests.swift */,
 				629C1A3723938F5900920687 /* Info.plist */,
+				629C1A612394E56A00920687 /* Day2Tests.swift */,
 			);
 			path = AdventOfCode2019Tests;
 			sourceTree = "<group>";
@@ -154,6 +164,16 @@
 				629C1A512393A34A00920687 /* DayOneLogic.swift */,
 			);
 			path = Day1;
+			sourceTree = "<group>";
+		};
+		629C1A5A2394DFB000920687 /* Day2 */ = {
+			isa = PBXGroup;
+			children = (
+				629C1A5B2394E00200920687 /* Day2Input.txt */,
+				629C1A5D2394E02700920687 /* Day2Logic.swift */,
+				629C1A5F2394E10200920687 /* IntCodeMachine.swift */,
+			);
+			path = Day2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,6 +282,7 @@
 			files = (
 				629C1A2B23938F5900920687 /* LaunchScreen.storyboard in Resources */,
 				629C1A2823938F5900920687 /* Preview Assets.xcassets in Resources */,
+				629C1A5C2394E00200920687 /* Day2Input.txt in Resources */,
 				629C1A2523938F5900920687 /* Assets.xcassets in Resources */,
 				629C1A572393B04300920687 /* Day1Input.txt in Resources */,
 			);
@@ -290,6 +311,8 @@
 			files = (
 				629C1A50239396A800920687 /* IntFileIterator.swift in Sources */,
 				629C1A1F23938F5600920687 /* AppDelegate.swift in Sources */,
+				629C1A602394E10200920687 /* IntCodeMachine.swift in Sources */,
+				629C1A5E2394E02700920687 /* Day2Logic.swift in Sources */,
 				629C1A2123938F5600920687 /* SceneDelegate.swift in Sources */,
 				629C1A2323938F5600920687 /* ContentView.swift in Sources */,
 				629C1A522393A34A00920687 /* DayOneLogic.swift in Sources */,
@@ -302,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				629C1A3623938F5900920687 /* AdventOfCode2019Tests.swift in Sources */,
+				629C1A622394E56A00920687 /* Day2Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

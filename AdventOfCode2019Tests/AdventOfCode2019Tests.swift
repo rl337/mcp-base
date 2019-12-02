@@ -40,6 +40,20 @@ class AdventOfCode2019Tests: XCTestCase {
 
         XCTAssertEqual(6, sum, "Iteratoring over thing didn't sum to 6")
     }
+    
+    func testintFileIteratorDelimiter() throws {
+        let testFile = URL(fileURLWithPath: "/tmp/omg.txt")
+        try "1,2,3".write(
+            to:testFile,
+            atomically: false,
+            encoding: .utf8
+        )
+        var i = try IntFileIterator(contentsOf: testFile, delimitedBy: ",")
+        XCTAssertEqual(1, i.next()!, "First value should be 1")
+        XCTAssertEqual(2, i.next()!, "Second value should be 2")
+        XCTAssertEqual(3, i.next()!, "Third value should be 3")
+        XCTAssertNil(i.next(), "Should only be 3 values")
+    }
 
     func testFuelCalculator() {
         let x = DayOneSolution()

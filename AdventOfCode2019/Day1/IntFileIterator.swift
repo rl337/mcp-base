@@ -13,11 +13,18 @@ public struct IntFileIterator: Sequence, IteratorProtocol {
     private var values : Array<Int>
     private var index: Int?
     
-    init(contentsOf file: URL) throws {
+    init(contentsOf file: URL, delimitedBy delimiter: Character = "\n") throws {
         values = Array<Int>();
-        let raw = try String(contentsOf: file)
-        let rawSplits = raw.split(separator: "\n")
+        var raw = try String(contentsOf: file)
+        if raw.hasSuffix("\n") && delimiter != "\n" {
+            raw.removeLast()
+        }
+        
+        let rawSplits = raw.split(separator: delimiter)
         for rawSplit in rawSplits {
+            if rawSplit == "" {
+                continue
+            }
             let intValue = Int(String(rawSplit))
             values.append(intValue!)
         }
@@ -46,6 +53,10 @@ public struct IntFileIterator: Sequence, IteratorProtocol {
         }
         
         return values[index]
+    }
+    
+    public func array() -> [Int] {
+        return values
     }
     
     public enum IntFileIteratorError : Error {

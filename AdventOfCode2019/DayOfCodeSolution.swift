@@ -43,6 +43,7 @@ public class SolutionController {
             instance = SolutionController(
                 for: [
                     DayOneSolution(),
+                    DayTwoSolution(),
                 ]
             )
             return instance!
@@ -54,7 +55,7 @@ public class SolutionController {
     
     public init(for solutions: [DayOfCodeSolution]) {
         self.solutions = solutions
-        self.current = 0
+        self.current = solutions.count - 1
     }
     
     public func select(index i: Int) {
