@@ -16,6 +16,10 @@ public struct GridPoint : Hashable{
         self.x = x
         self.y = y
     }
+    
+    func getManhattanDistance(p: GridPoint) -> Int {
+        return calcManhattanDistance(a: self, b: p)
+    }
 }
 
 let Origin = GridPoint(x: 0, y: 0)
