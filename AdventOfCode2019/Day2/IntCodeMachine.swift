@@ -72,6 +72,7 @@ class IntCodeMachine {
         code[loc] = value
     }
     
+    
     func valueAtIP() throws -> Int {
         guard ip >= 0 && ip < code.count else {
             throw IntCodeMachineError.IPOutOfRange
@@ -115,36 +116,67 @@ class IntCodeMachine {
                 break
             }
             
-            var advance: Int
             switch de {
             case 1:
                 let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
                 let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
                 let result = operand1 + operand2
                 try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
-                advance = 4
+                ip += 4
             case 2:
                 let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
                 let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
                 let result = operand1 * operand2
                 try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
-                advance = 4
+                ip += 4
             case 3:
                 guard self.inputArray.count > 0 else {
                     throw IntCodeMachineError.UnexpectedEndOfInput
                 }
                 let result = self.inputArray.remove(at: 0)
                 try storeAtIPOffsetIndex(result, atOffset: 1, usingMode: c)
-                advance = 2
+                ip += 2
             case 4:
                 let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
                 self.outputArray.append(operand1)
-                advance = 2
+                ip += 2
+            case 5:
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                if operand1 != 0 {
+                    ip = operand2
+                } else {
+                    ip += 3
+                }
+            case 6:
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                if operand1 == 0 {
+                    ip = operand2
+                } else {
+                    ip += 3
+                }
+            case 7:
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                var result = 0
+                if operand1 < operand2 {
+                    result = 1
+                }
+                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
+                ip += 4
+            case 8:
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                var result = 0
+                if operand1 == operand2 {
+                    result = 1
+                }
+                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
+                ip += 4
             default:
                 throw IntCodeMachineError.InvalidOpcode
             }
-            
-            ip += advance
         }
     }
     
