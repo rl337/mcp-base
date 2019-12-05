@@ -47,6 +47,31 @@ public class DayOfCodeSolution {
             )
         }
     }
+    
+    func getListForFunction(method: () throws -> [Int], labeledWith label: String) -> [UIEntry] {
+        do {
+            let results = try method()
+            var resultList: [UIEntry] = [UIEntry(
+                thatDisplays: "Output",
+                labeledWith: "#"
+            )]
+            var i = 1
+            for result in results {
+                resultList.append(UIEntry(
+                    thatDisplays: String(result),
+                    labeledWith: String(i)
+                ))
+                i += 1
+            }
+            return resultList
+        } catch {
+            return [UIEntry(
+                thatDisplays: "\(error)",
+                labeledWith: label,
+                isError: true
+            )]
+        }
+    }
 
 }
 
@@ -63,6 +88,7 @@ public class SolutionController {
                     DayTwoSolution(),
                     DayThreeSolution(),
                     DayFourSolution(),
+                    DayFiveSolution(),
                 ]
             )
             return instance!
