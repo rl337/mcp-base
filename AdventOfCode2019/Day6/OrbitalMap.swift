@@ -48,6 +48,10 @@ class Node {
         return result
     }
     
+    func addNode(_ node: Node) {
+        children.append(node)
+    }
+    
     func listNodePaths(_ path: [String] = []) -> [[String]] {
         var result: [[String]] = []
         
@@ -128,28 +132,41 @@ class OrbitalMap {
             trimmed.removeLast()
         }
         let parts = trimmed.components(separatedBy: "\n")
-        var toAdd: [[String]] = []
+        var toAdd: [String:Node] = ["COM": com]
         for part in parts {
             let names = part.components(separatedBy: ")")
             guard names.count == 2 else {
                 throw OrbitalMapError.OrbitalMapEntryMustHaveTwoParts
             }
-            toAdd.append(names)
-        }
-        
-        var attempts = 0
-        while toAdd.count > 0 && attempts <= toAdd.count {
-            attempts += 1
-            let next = toAdd.removeFirst()
-            let candidate = com.find(named: next[0])
-            guard let parent = candidate else {
-                toAdd.append(next)
-                continue
+            
+            var parent = toAdd[names[0]]
+            if parent == nil {
+                parent = Node(named: names[0])
+                toAdd[names[0]] = parent
             }
             
-            _ = try parent.add(named: next[1])
-            attempts = 0
+            var child = toAdd[names[1]]
+            if child == nil {
+                child = Node(named: names[1])
+                toAdd[names[1]] = child
+            }
+            
+            parent!.addNode(child!)
         }
+        
+//        var attempts = 0
+//        while toAdd.count > 0 && attempts <= toAdd.count {
+//            attempts += 1
+//            let next = toAdd.removeFirst()
+//            let candidate = com.find(named: next[0])
+//            guard let parent = candidate else {
+//                toAdd.append(next)
+//                continue
+//            }
+//            
+//            _ = try parent.add(named: next[1])
+//            attempts = 0
+//        }
     }
     
     enum OrbitalMapError: Error {
