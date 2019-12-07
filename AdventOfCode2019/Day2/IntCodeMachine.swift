@@ -13,12 +13,14 @@ class IntCodeMachine {
     private var ip: Int
     private var inputArray: [Int]
     private var outputArray: [Int]
+    private var halted: Bool
     
     init(withCode code: [Int], withInput inputs: [Int] = []) {
         self.code = code
         self.ip = 0
         self.inputArray = []
         self.outputArray = []
+        self.halted = false
         
         if inputs.count > 0 {
             inputArray.append(contentsOf: inputs)
@@ -88,7 +90,28 @@ class IntCodeMachine {
         return outputArray
     }
     
+    func clearOutput() {
+        outputArray.removeAll()
+    }
+    
+    func addInput(value: Int) {
+        self.inputArray.append(value)
+    }
+    
+    func addInput(values: [Int]) {
+        self.inputArray.append(contentsOf: values)
+    }
+    
+    func isHalted() -> Bool {
+        return halted
+    }
+    
     func run() throws {
+        
+        if halted {
+            throw IntCodeMachineError.CallToRunOnHaltedMachine
+        }
+        
         while true {
             let opcode = try valueAtIP()
             var opcodeString = String(opcode)
@@ -113,6 +136,7 @@ class IntCodeMachine {
             de = Int(opcodeString)!
 
             if de == 99 {
+                halted = true
                 break
             }
             
@@ -187,6 +211,7 @@ class IntCodeMachine {
             LocationOutOfRange,
             InvalidIPOffset,
             UnexpectedEndOfInput,
-            InvalidAddressingMode
+            InvalidAddressingMode,
+            CallToRunOnHaltedMachine
     }
 }

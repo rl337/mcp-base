@@ -90,6 +90,7 @@ public class SolutionController {
                     DayFourSolution(),
                     DayFiveSolution(),
                     DaySixSolution(),
+                    DaySevenSolution(),
                 ]
             )
             return instance!
