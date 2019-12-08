@@ -48,6 +48,22 @@ public class DayOfCodeSolution {
         }
     }
     
+    func getEntryForStringFunction(method: () throws -> String, labeledWith label: String) -> UIEntry {
+        do {
+            let result = try method()
+            return UIEntry(
+                thatDisplays: result,
+                labeledWith: label
+            )
+        } catch {
+            return UIEntry(
+                thatDisplays: "\(error)",
+                labeledWith: label,
+                isError: true
+            )
+        }
+    }
+    
     func getListForFunction(method: () throws -> [Int], labeledWith label: String) -> [UIEntry] {
         do {
             let results = try method()
@@ -91,6 +107,7 @@ public class SolutionController {
                     DayFiveSolution(),
                     DaySixSolution(),
                     DaySevenSolution(),
+                    DayEightSolution(),
                 ]
             )
             return instance!
