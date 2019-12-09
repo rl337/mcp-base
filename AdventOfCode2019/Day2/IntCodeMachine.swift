@@ -108,51 +108,39 @@ class IntCodeMachine {
         }
     }
     
-    func indexOfIPOffset(offset: Int) throws -> Int {
+    func valueAtIPOffsetWithMode(atOffset offset: Int, usingMode mode: Int = 0) throws -> Int {
         guard ip >= 0 else {
             throw IntCodeMachineError.IPOutOfRange
         }
         
         let idx = ip + offset
-        return idx
-    }
-    
-    func valueAtIPOffsetWithMode(atOffset offset: Int, usingMode mode: Int = 0) throws -> Int {
-        let idx = try indexOfIPOffset(offset: offset)
         let valueAtIdx = try code.get(idx)
-        
-        if mode == 0 {
+        switch mode {
+        case 0:
             return try code.get(valueAtIdx)
-        } else if mode == 1 {
+        case 1:
             return valueAtIdx
-        } else if mode == 2 {
+        case 2:
             return try code.get(valueAtIdx + relativeBase)
+        default:
+            throw IntCodeMachineError.InvalidAddressingMode
         }
-        
-        throw IntCodeMachineError.InvalidAddressingMode
     }
     
     func storeAtIPOffsetIndex(_ value: Int, atOffset offset: Int, usingMode mode: Int = 0) throws {
-        guard mode != 1 else {
+        guard ip >= 0 else {
+            throw IntCodeMachineError.IPOutOfRange
+        }
+
+        let idx = ip + offset
+        switch mode {
+        case 0:
+            try code.set(code.get(idx), value: value)
+        case 2:
+            try code.set(code.get(idx) + relativeBase, value: value)
+        default:
             throw IntCodeMachineError.InvalidAddressingMode
         }
-        
-        let idx = try indexOfIPOffset(offset: offset)
-        let loc: Int
-        if mode == 0 {
-            loc = try code.get(idx)
-        } else if mode == 2 {
-            loc = try code.get(idx) + relativeBase
-        } else {
-            throw IntCodeMachineError.InvalidAddressingMode
-        }
-        
-        try code.set(loc, value: value)
-    }
-    
-    
-    func valueAtIP() throws -> Int {
-        return try code.get(ip)
     }
     
     func array() -> [Int] {
@@ -186,7 +174,7 @@ class IntCodeMachine {
         }
         
         while true {
-            let rawOpcode = try valueAtIP()
+            let rawOpcode = try code.get(ip)
             let opcode = try DecodedOpCode(rawOpcode)
 
             if opcode.operation == 99 {
