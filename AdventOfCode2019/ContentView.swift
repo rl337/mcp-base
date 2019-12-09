@@ -15,11 +15,11 @@ struct ContentView: View {
         let solutions = SolutionController.getInstance();
         let elements = solutions.execute()
         for element in elements {
-            
+
             if let label = element.label {
                 output = output + label + ": "
             }
-            
+
             if element.isError {
                 output = output + "ERROR! -- "
             }
@@ -30,7 +30,6 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    var solutions: SolutionController
 
     static var previews: some View {
         ContentView()

@@ -9,11 +9,13 @@
 import Foundation
 
 public struct UIEntry {
-    var label: String?
-    var message: String
-    var isError: Bool
+    public var id: Int
+    public var label: String?
+    public var message: String
+    public var isError: Bool
 
-    init(thatDisplays message: String, labeledWith label: String? = nil, isError: Bool = false) {
+    init(withId id: Int, thatDisplays message: String, labeledWith label: String? = nil, isError: Bool = false) {
+        self.id = id
         self.message = message
         self.label = label
         self.isError = isError
@@ -23,7 +25,7 @@ public struct UIEntry {
 public class DayOfCodeSolution {
     public func execute() -> [UIEntry] {
         return [
-            UIEntry(thatDisplays: "This is the Prototype Day of Code")
+            UIEntry(withId: 0, thatDisplays: "This is the Prototype Day of Code")
         ]
     }
     
@@ -32,15 +34,17 @@ public class DayOfCodeSolution {
         return bundlePath.appendingPathComponent(name)
     }
     
-    func getEntryForFunction(method: () throws -> Int, labeledWith label: String) -> UIEntry {
+    func getEntryForFunction(_ id: Int, method: () throws -> Int, labeledWith label: String) -> UIEntry {
         do {
             let result = try method()
             return UIEntry(
+                withId: id,
                 thatDisplays: String(result),
                 labeledWith: label
             )
         } catch {
             return UIEntry(
+                withId: id,
                 thatDisplays: "\(error)",
                 labeledWith: label,
                 isError: true
@@ -48,15 +52,17 @@ public class DayOfCodeSolution {
         }
     }
     
-    func getEntryForStringFunction(method: () throws -> String, labeledWith label: String) -> UIEntry {
+    func getEntryForStringFunction(_ id: Int, method: () throws -> String, labeledWith label: String) -> UIEntry {
         do {
             let result = try method()
             return UIEntry(
+                withId: id,
                 thatDisplays: result,
                 labeledWith: label
             )
         } catch {
             return UIEntry(
+                withId: id,
                 thatDisplays: "\(error)",
                 labeledWith: label,
                 isError: true
@@ -64,16 +70,18 @@ public class DayOfCodeSolution {
         }
     }
     
-    func getListForFunction(method: () throws -> [Int], labeledWith label: String) -> [UIEntry] {
+    func getListForFunction(_ id: Int, method: () throws -> [Int], labeledWith label: String) -> [UIEntry] {
         do {
             let results = try method()
             var resultList: [UIEntry] = [UIEntry(
+                withId: id,
                 thatDisplays: "Output",
                 labeledWith: "#"
             )]
             var i = 1
             for result in results {
                 resultList.append(UIEntry(
+                    withId: id + i,
                     thatDisplays: String(result),
                     labeledWith: String(i)
                 ))
@@ -82,6 +90,7 @@ public class DayOfCodeSolution {
             return resultList
         } catch {
             return [UIEntry(
+                withId: id,
                 thatDisplays: "\(error)",
                 labeledWith: label,
                 isError: true
@@ -108,6 +117,7 @@ public class SolutionController {
                     DaySixSolution(),
                     DaySevenSolution(),
                     DayEightSolution(),
+                    DayNineSolution(),
                 ]
             )
             return instance!

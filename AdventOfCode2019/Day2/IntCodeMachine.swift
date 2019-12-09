@@ -11,75 +11,95 @@ import Foundation
 class IntCodeMachine {
     private var code: [Int]
     private var ip: Int
+    private var relativeBase: Int
     private var inputArray: [Int]
     private var outputArray: [Int]
     private var halted: Bool
-    
+    private var beyondMemory: [Int:Int]
+
     init(withCode code: [Int], withInput inputs: [Int] = []) {
         self.code = code
         self.ip = 0
+        self.relativeBase = 0
         self.inputArray = []
         self.outputArray = []
         self.halted = false
+        self.beyondMemory = [:]
         
         if inputs.count > 0 {
             inputArray.append(contentsOf: inputs)
         }
     }
     
-    func indexOfIPOffset(offset: Int) throws -> Int {
-        guard offset >= 0 else {
-            throw IntCodeMachineError.InvalidIPOffset
+    func getValueAtIndex(_ idx: Int) throws -> Int {
+        guard idx >= 0 else {
+            throw IntCodeMachineError.LocationOutOfRange
         }
         
-        guard ip >= 0 && ip < code.count else {
+        if idx >= code.count {
+            return beyondMemory[idx] ?? 0
+        }
+        
+        return code[idx]
+    }
+    
+    func setValueAtIndex(_ idx: Int, value: Int) throws {
+        guard idx >= 0 else {
+            throw IntCodeMachineError.LocationOutOfRange
+        }
+        
+        if idx >= code.count {
+            beyondMemory[idx] = value
+            return
+        }
+        
+        code[idx] = value
+    }
+    
+    func indexOfIPOffset(offset: Int) throws -> Int {
+        guard ip >= 0 else {
             throw IntCodeMachineError.IPOutOfRange
         }
         
         let idx = ip + offset
-        guard idx < code.count else {
-            throw IntCodeMachineError.LocationOutOfRange
-        }
-        
         return idx
     }
     
     func valueAtIPOffsetWithMode(atOffset offset: Int, usingMode mode: Int = 0) throws -> Int {
-        
         let idx = try indexOfIPOffset(offset: offset)
-        let valueAtIdx = code[idx]
+        let valueAtIdx = try getValueAtIndex(idx)
         if mode == 0 {
-            
-            guard valueAtIdx >= 0 && valueAtIdx < code.count else {
-                throw IntCodeMachineError.LocationOutOfRange
-            }
-            return code[valueAtIdx]
+            return try getValueAtIndex(valueAtIdx)
         } else if mode == 1 {
             return valueAtIdx
+        } else if mode == 2 {
+            return try getValueAtIndex(valueAtIdx + relativeBase)
         }
         
         throw IntCodeMachineError.InvalidAddressingMode
     }
     
     func storeAtIPOffsetIndex(_ value: Int, atOffset offset: Int, usingMode mode: Int = 0) throws {
-        guard mode == 0 else {
+        guard mode != 1 else {
             throw IntCodeMachineError.InvalidAddressingMode
         }
         
         let idx = try indexOfIPOffset(offset: offset)
-        let loc = code[idx]
-        guard loc >= 0 && loc < code.count else {
-            throw IntCodeMachineError.LocationOutOfRange
+        let loc: Int
+        if mode == 0 {
+            loc = try getValueAtIndex(idx)
+        } else if mode == 2 {
+            loc = try getValueAtIndex(idx) + relativeBase
+        } else {
+            throw IntCodeMachineError.InvalidAddressingMode
         }
-        code[loc] = value
+        
+        try setValueAtIndex(loc, value: value)
     }
     
     
     func valueAtIP() throws -> Int {
-        guard ip >= 0 && ip < code.count else {
-            throw IntCodeMachineError.IPOutOfRange
-        }
-        return code[ip]
+        return try getValueAtIndex(ip)
     }
     
     func array() -> [Int] {
@@ -198,6 +218,10 @@ class IntCodeMachine {
                 }
                 try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
                 ip += 4
+            case 9:
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
+                self.relativeBase += operand1
+                ip += 2
             default:
                 throw IntCodeMachineError.InvalidOpcode
             }
