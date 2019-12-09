@@ -8,8 +8,85 @@
 
 import Foundation
 
+class VirtualArray {
+    private var real: [Int]
+    private var virtual: [Int:Int]
+    
+    init(_ initial: [Int] = []) {
+        self.real = initial
+        self.virtual = [:]
+    }
+    
+    func get(_ index: Int) throws -> Int {
+        guard index >= 0 else {
+            throw VirtualArrayError.InvalidNegativeIndex
+        }
+        
+        if index < real.count {
+            return real[index]
+        }
+        
+        return virtual[index] ?? 0
+    }
+    
+    func set(_ index: Int, value: Int) throws {
+        guard index >= 0 else {
+            throw VirtualArrayError.InvalidNegativeIndex
+        }
+        
+        if index < real.count {
+            real[index] = value
+        }
+        
+        virtual[index] = value
+    }
+    
+    enum VirtualArrayError: Error {
+        case InvalidNegativeIndex
+    }
+    
+    func asArray() -> [Int] {
+        return real
+    }
+}
+
+struct DecodedOpCode {
+    var paramAMode: Int
+    var paramBMode: Int
+    var paramCMode: Int
+    var operation: Int
+    
+    init(_ opcode: Int) throws {
+        var opcodeString = String(opcode)
+        
+        if opcodeString.count < 1 {
+            throw DecodedOpCodeError.InvalidOpcode
+        }
+        
+        paramAMode = 0
+        if opcodeString.count == 5 {
+            paramAMode = Int(String(opcodeString.remove(at: opcodeString.startIndex)))!
+        }
+        
+        paramBMode = 0
+        if opcodeString.count == 4 {
+            paramBMode = Int(String(opcodeString.remove(at: opcodeString.startIndex)))!
+        }
+        
+        paramCMode = 0
+        if opcodeString.count == 3 {
+            paramCMode = Int(String(opcodeString.remove(at: opcodeString.startIndex)))!
+        }
+        operation = Int(opcodeString)!
+    }
+    
+    enum DecodedOpCodeError: Error {
+        case InvalidOpcode
+    }
+}
+
 class IntCodeMachine {
-    private var code: [Int]
+    private var code: VirtualArray
     private var ip: Int
     private var relativeBase: Int
     private var inputArray: [Int]
@@ -18,7 +95,7 @@ class IntCodeMachine {
     private var beyondMemory: [Int:Int]
 
     init(withCode code: [Int], withInput inputs: [Int] = []) {
-        self.code = code
+        self.code = VirtualArray(code)
         self.ip = 0
         self.relativeBase = 0
         self.inputArray = []
@@ -29,31 +106,6 @@ class IntCodeMachine {
         if inputs.count > 0 {
             inputArray.append(contentsOf: inputs)
         }
-    }
-    
-    func getValueAtIndex(_ idx: Int) throws -> Int {
-        guard idx >= 0 else {
-            throw IntCodeMachineError.LocationOutOfRange
-        }
-        
-        if idx >= code.count {
-            return beyondMemory[idx] ?? 0
-        }
-        
-        return code[idx]
-    }
-    
-    func setValueAtIndex(_ idx: Int, value: Int) throws {
-        guard idx >= 0 else {
-            throw IntCodeMachineError.LocationOutOfRange
-        }
-        
-        if idx >= code.count {
-            beyondMemory[idx] = value
-            return
-        }
-        
-        code[idx] = value
     }
     
     func indexOfIPOffset(offset: Int) throws -> Int {
@@ -67,13 +119,14 @@ class IntCodeMachine {
     
     func valueAtIPOffsetWithMode(atOffset offset: Int, usingMode mode: Int = 0) throws -> Int {
         let idx = try indexOfIPOffset(offset: offset)
-        let valueAtIdx = try getValueAtIndex(idx)
+        let valueAtIdx = try code.get(idx)
+        
         if mode == 0 {
-            return try getValueAtIndex(valueAtIdx)
+            return try code.get(valueAtIdx)
         } else if mode == 1 {
             return valueAtIdx
         } else if mode == 2 {
-            return try getValueAtIndex(valueAtIdx + relativeBase)
+            return try code.get(valueAtIdx + relativeBase)
         }
         
         throw IntCodeMachineError.InvalidAddressingMode
@@ -87,23 +140,23 @@ class IntCodeMachine {
         let idx = try indexOfIPOffset(offset: offset)
         let loc: Int
         if mode == 0 {
-            loc = try getValueAtIndex(idx)
+            loc = try code.get(idx)
         } else if mode == 2 {
-            loc = try getValueAtIndex(idx) + relativeBase
+            loc = try code.get(idx) + relativeBase
         } else {
             throw IntCodeMachineError.InvalidAddressingMode
         }
         
-        try setValueAtIndex(loc, value: value)
+        try code.set(loc, value: value)
     }
     
     
     func valueAtIP() throws -> Int {
-        return try getValueAtIndex(ip)
+        return try code.get(ip)
     }
     
     func array() -> [Int] {
-        return code
+        return code.asArray()
     }
     
     func output() -> [Int] {
@@ -133,93 +186,74 @@ class IntCodeMachine {
         }
         
         while true {
-            let opcode = try valueAtIP()
-            var opcodeString = String(opcode)
-            
-            var a: Int = 0
-            var b: Int = 0
-            var c: Int = 0
-            var de: Int
-            if opcodeString.count < 1 {
-                throw IntCodeMachineError.InvalidOpcode
-            }
-            
-            if opcodeString.count == 5 {
-                a = Int(String(opcodeString.remove(at: opcodeString.startIndex)))!
-            }
-            if opcodeString.count == 4 {
-                b = Int(String(opcodeString.remove(at: opcodeString.startIndex)))!
-            }
-            if opcodeString.count == 3 {
-                c = Int(String(opcodeString.remove(at: opcodeString.startIndex)))!
-            }
-            de = Int(opcodeString)!
+            let rawOpcode = try valueAtIP()
+            let opcode = try DecodedOpCode(rawOpcode)
 
-            if de == 99 {
+            if opcode.operation == 99 {
                 halted = true
                 break
             }
             
-            switch de {
+            switch opcode.operation {
             case 1:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
-                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: opcode.paramBMode)
                 let result = operand1 + operand2
-                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
+                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: opcode.paramAMode)
                 ip += 4
             case 2:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
-                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: opcode.paramBMode)
                 let result = operand1 * operand2
-                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
+                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: opcode.paramAMode)
                 ip += 4
             case 3:
                 guard self.inputArray.count > 0 else {
                     throw IntCodeMachineError.UnexpectedEndOfInput
                 }
                 let result = self.inputArray.remove(at: 0)
-                try storeAtIPOffsetIndex(result, atOffset: 1, usingMode: c)
+                try storeAtIPOffsetIndex(result, atOffset: 1, usingMode: opcode.paramCMode)
                 ip += 2
             case 4:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
                 self.outputArray.append(operand1)
                 ip += 2
             case 5:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
-                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: opcode.paramBMode)
                 if operand1 != 0 {
                     ip = operand2
                 } else {
                     ip += 3
                 }
             case 6:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
-                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: opcode.paramBMode)
                 if operand1 == 0 {
                     ip = operand2
                 } else {
                     ip += 3
                 }
             case 7:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
-                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: opcode.paramBMode)
                 var result = 0
                 if operand1 < operand2 {
                     result = 1
                 }
-                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
+                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: opcode.paramAMode)
                 ip += 4
             case 8:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
-                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: b)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
+                let operand2 = try valueAtIPOffsetWithMode(atOffset: 2, usingMode: opcode.paramBMode)
                 var result = 0
                 if operand1 == operand2 {
                     result = 1
                 }
-                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: a)
+                try storeAtIPOffsetIndex(result, atOffset: 3, usingMode: opcode.paramAMode)
                 ip += 4
             case 9:
-                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: c)
+                let operand1 = try valueAtIPOffsetWithMode(atOffset: 1, usingMode: opcode.paramCMode)
                 self.relativeBase += operand1
                 ip += 2
             default:
