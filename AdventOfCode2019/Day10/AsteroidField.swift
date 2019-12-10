@@ -9,14 +9,16 @@
 import Foundation
 
 class AsteroidField {
-    let data: String
+    var data: String
     let width: Int
     let height: Int
+    var zapped: Set<GridPoint>
     init(data: String) {
         self.data = data
         let lines = data.components(separatedBy: "\n")
         self.width = lines[0].count
         self.height = lines.count
+        self.zapped = Set()
     }
     
     func isAsteroid(x: Int, y: Int) throws -> Bool {
@@ -24,7 +26,42 @@ class AsteroidField {
             throw AsteroidFieldError.CoordinateOutsideOfAstroidField
         }
         let item = data[data.index(data.startIndex, offsetBy: y * (width + 1) + x)]
-        return item == "#"
+        return item == "#" && !zapped.contains(GridPoint(x: x, y: y))
+    }
+    
+    func zapAsteroid(x: Int, y: Int) throws {
+        if try isAsteroid(x: x, y: y) {
+            zapped.insert(GridPoint(x: x, y: y))
+        }
+    }
+    
+    func getAngleBetweenPoints(a: GridPoint, b: GridPoint) -> Double {
+        let centered = GridPoint(x: b.x - a.x, y: b.y - a.y)
+        let bearingRadians = atan2(Double(centered.y), Double(centered.x)) + Double.pi/2;
+        var bearingDegrees = bearingRadians * 180 / Double.pi
+        while bearingDegrees < 0 {
+            bearingDegrees += 360.0
+        }
+        while bearingDegrees >= 360.0 {
+            bearingDegrees -= 360.0
+        }
+        
+        return Double(bearingDegrees)
+    }
+    
+    func listVisibleOrderedByAngle(origin: GridPoint) throws -> [GridPoint] {
+        var visible: [GridPoint] = []
+        for y in 0..<height {
+            for x in 0..<width {
+                if try isAsteroid(x: x, y: y) && hasDirectLineOfSight(x1: origin.x, y1: origin.y, x2: x, y2: y) {
+                    visible.append(GridPoint(x: x, y: y))
+                }
+            }
+        }
+        
+        visible.sort { getAngleBetweenPoints(a: origin, b: $0) < getAngleBetweenPoints(a: origin, b: $1)}
+        
+        return visible
     }
     
     func hasDirectLineOfSight(x1: Int, y1: Int, x2: Int, y2: Int) throws -> Bool {
@@ -94,6 +131,26 @@ class AsteroidField {
         }
         
         return maxCount
+    }
+    
+    func findBestCoordForStation() throws -> GridPoint? {
+        var maxCount = 0
+        var bestPoint: GridPoint?
+        for ny in 0..<height {
+            for nx in 0..<width {
+                if try isAsteroid(x: nx, y: ny) {
+                    guard let count = try countVisibleAsteroids(x: nx, y: ny) else {
+                        continue
+                    }
+                    if count > maxCount {
+                        maxCount = count
+                        bestPoint = GridPoint(x: nx, y: ny)
+                    }
+                }
+            }
+        }
+        
+        return bestPoint
     }
     
     

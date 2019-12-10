@@ -22,7 +22,33 @@ class DayTenSolution : DayOfCodeSolution {
     }
     
     func calculatePart2() throws -> Int {
-        0
+        let day10InputFile = getFileFromProject(named: "Day10Input.txt")
+        var map = try String(contentsOf: day10InputFile)
+        if map.last == "\n" {
+            map.removeLast()
+        }
+        let field = AsteroidField(data: map)
+        let origin = try field.findBestCoordForStation()
+
+        return try compute200thZapped(map: map, origin: origin!)
+    }
+    
+    func compute200thZapped(map: String, origin: GridPoint) throws -> Int {
+        let field = AsteroidField(data: map)
+        var numZapped = 0
+        var target: GridPoint?
+        while target == nil {
+            let list = try field.listVisibleOrderedByAngle(origin: origin)
+            for item in list {
+                if numZapped == 199 {
+                    target = item
+                    break
+                }
+                try field.zapAsteroid(x: item.x, y: item.y)
+                numZapped += 1
+            }
+        }
+        return target!.x*100 + target!.y
     }
     
     public override func execute() -> [UIEntry] {

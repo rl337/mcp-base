@@ -134,4 +134,65 @@ class Day10Tests: XCTestCase {
             XCTAssertEqual(210, try field.findBestCountForStation())
         }
     
+    func testCalcAngle() throws {
+        let field = AsteroidField(data: "")
+        XCTAssertEqual(
+           90,
+           field.getAngleBetweenPoints(
+                a: GridPoint(x: 0, y: 0),
+                b: GridPoint(x: 1, y: 0)
+            )
+        )
+        XCTAssertEqual(
+           180,
+           field.getAngleBetweenPoints(
+                a: GridPoint(x: 0, y: 0),
+                b: GridPoint(x: 0, y: 1)
+            )
+        )
+        XCTAssertEqual(
+           270,
+           field.getAngleBetweenPoints(
+                a: GridPoint(x: 0, y: 0),
+                b: GridPoint(x: -1, y: 0)
+           ),
+           accuracy: 0.0001
+        )
+        XCTAssertEqual(
+           0,
+           field.getAngleBetweenPoints(
+                a: GridPoint(x: 0, y: 0),
+                b: GridPoint(x: 0, y: -1)
+           ),
+           accuracy: 0.0001
+        )
+    }
+    
+    func testZapOrder() throws {
+            let map = """
+                .#..##.###...#######
+                ##.############..##.
+                .#.######.########.#
+                .###.#######.####.#.
+                #####.##.#.##.###.##
+                ..#####..#.#########
+                ####################
+                #.####....###.#.#.##
+                ##.#################
+                #####.##.###..####..
+                ..######..##.#######
+                ####.##.####...##..#
+                .#####..#.######.###
+                ##...#.##########...
+                #.##########.#######
+                .####.#.###.###.#.##
+                ....##.##.###..#####
+                .#.#.###########.###
+                #.#.#.#####.####.###
+                ###.##.####.##.#..##
+                """
+        let result = try DayTenSolution().compute200thZapped(map: map, origin: GridPoint(x: 11, y: 13))
+        XCTAssertEqual(802, result)
+    }
+    
 }
