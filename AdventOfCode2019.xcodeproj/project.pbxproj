@@ -18,6 +18,9 @@
 		624B9A40239F61E70012F095 /* AsteroidField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A3F239F61E70012F095 /* AsteroidField.swift */; };
 		624B9A42239F67680012F095 /* Day10Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A41239F67680012F095 /* Day10Tests.swift */; };
 		624B9A44239F7F500012F095 /* Day10Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A43239F7F500012F095 /* Day10Logic.swift */; };
+		624B9A4723A0BB5B0012F095 /* Day11Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 624B9A4623A0BB5B0012F095 /* Day11Input.txt */; };
+		624B9A4923A0BBC00012F095 /* PanelGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A4823A0BBC00012F095 /* PanelGrid.swift */; };
+		624B9A4B23A0C8050012F095 /* Day11Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A4A23A0C8050012F095 /* Day11Logic.swift */; };
 		629C1A1F23938F5600920687 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A1E23938F5600920687 /* AppDelegate.swift */; };
 		629C1A2123938F5600920687 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A2023938F5600920687 /* SceneDelegate.swift */; };
 		629C1A2323938F5600920687 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629C1A2223938F5600920687 /* ContentView.swift */; };
@@ -81,6 +84,9 @@
 		624B9A3F239F61E70012F095 /* AsteroidField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsteroidField.swift; sourceTree = "<group>"; };
 		624B9A41239F67680012F095 /* Day10Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day10Tests.swift; sourceTree = "<group>"; };
 		624B9A43239F7F500012F095 /* Day10Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day10Logic.swift; sourceTree = "<group>"; };
+		624B9A4623A0BB5B0012F095 /* Day11Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day11Input.txt; sourceTree = "<group>"; };
+		624B9A4823A0BBC00012F095 /* PanelGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelGrid.swift; sourceTree = "<group>"; };
+		624B9A4A23A0C8050012F095 /* Day11Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day11Logic.swift; sourceTree = "<group>"; };
 		629C1A1B23938F5600920687 /* AdventOfCode2019.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdventOfCode2019.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		629C1A1E23938F5600920687 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		629C1A2023938F5600920687 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -175,6 +181,16 @@
 			path = Day10;
 			sourceTree = "<group>";
 		};
+		624B9A4523A0BAF10012F095 /* Day11 */ = {
+			isa = PBXGroup;
+			children = (
+				624B9A4623A0BB5B0012F095 /* Day11Input.txt */,
+				624B9A4823A0BBC00012F095 /* PanelGrid.swift */,
+				624B9A4A23A0C8050012F095 /* Day11Logic.swift */,
+			);
+			path = Day11;
+			sourceTree = "<group>";
+		};
 		629C1A1223938F5600920687 = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +214,7 @@
 		629C1A1D23938F5600920687 /* AdventOfCode2019 */ = {
 			isa = PBXGroup;
 			children = (
+				624B9A4523A0BAF10012F095 /* Day11 */,
 				624B9A3C239F61450012F095 /* Day10 */,
 				624B9A37239E2A830012F095 /* Day9 */,
 				62C8361C239CCA2B00609DF8 /* Day8 */,
@@ -426,6 +443,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				629C1A6723962BFF00920687 /* Day3Input.txt in Resources */,
+				624B9A4723A0BB5B0012F095 /* Day11Input.txt in Resources */,
 				62C83620239CCAC300609DF8 /* Day8Input.txt in Resources */,
 				629C1A2B23938F5900920687 /* LaunchScreen.storyboard in Resources */,
 				624B9A3E239F61D00012F095 /* Day10Input.txt in Resources */,
@@ -467,6 +485,8 @@
 				629C1A6923962C8800920687 /* Grid.swift in Sources */,
 				624B9A44239F7F500012F095 /* Day10Logic.swift in Sources */,
 				629C1A5E2394E02700920687 /* Day2Logic.swift in Sources */,
+				624B9A4923A0BBC00012F095 /* PanelGrid.swift in Sources */,
+				624B9A4B23A0C8050012F095 /* Day11Logic.swift in Sources */,
 				629C1A6523962B4200920687 /* Day3Logic.swift in Sources */,
 				629C1A2123938F5600920687 /* SceneDelegate.swift in Sources */,
 				62C83617239B81D000609DF8 /* Day7Logic.swift in Sources */,

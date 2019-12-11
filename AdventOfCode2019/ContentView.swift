@@ -25,7 +25,7 @@ struct ContentView: View {
             }
             output = output + element.message + "\n"
         }
-        return Text(output).font(.system(.body, design: .monospaced))
+        return Text(output).font(.system(.footnote, design: .monospaced))
     }
 }
 
