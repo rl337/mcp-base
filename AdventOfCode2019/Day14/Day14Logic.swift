@@ -1,0 +1,59 @@
+//
+//  Day12Logic.swift
+//  AdventOfCode2019
+//
+//  Created by Richard Lee on 12/14/19.
+//  Copyright © 2019 Richard Lee. All rights reserved.
+//
+
+import Foundation
+
+class DayFourteenSolution : DayOfCodeSolution {
+    
+    func calculatePart1() throws -> Int {
+        let day11InputFile = getFileFromProject(named: "Day14Input.txt")
+        let recipes = try String(contentsOf: day11InputFile)
+        return try oreToProduceNFuel(recipes: recipes, n: 1)
+    }
+    
+    func oreToProduceNFuel(recipes: String, n: Int) throws -> Int{
+        let factory = NanoFactory(recipes: recipes)
+        
+        _ = try factory.get(Ingredient(qty: n, name: "FUEL"))
+        return factory.oreUsed
+    }
+    
+    func fuelWithOre(recipes: String, ore: Int) throws -> Int {
+        let oreFor1Fuel = try oreToProduceNFuel(recipes: recipes, n: 1)
+        var estimate = ore / oreFor1Fuel
+        while try oreToProduceNFuel(recipes: recipes, n: estimate) < ore {
+            estimate += 1000
+        }
+        
+        while try oreToProduceNFuel(recipes: recipes, n: estimate) > ore {
+            estimate -= 1
+        }
+        
+        return estimate
+    }
+    
+    func calculatePart2() throws -> Int {
+        let day11InputFile = getFileFromProject(named: "Day14Input.txt")
+        let recipes = try String(contentsOf: day11InputFile)
+        
+        let ore = 1000000000000
+        return try fuelWithOre(recipes: recipes, ore: ore)
+    }
+    
+    public override func execute() -> [UIEntry] {
+        let part1Entry = getEntryForFunction(1, method: calculatePart1, labeledWith: "Part 1")
+        let part2Entry = getEntryForFunction(2, method: calculatePart2, labeledWith: "Part 2")
+        
+        return [
+            UIEntry(withId: 0, thatDisplays: "Day 11 Solution"),
+            part1Entry,
+            part2Entry
+        ]
+    }
+
+}

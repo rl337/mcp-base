@@ -61,9 +61,4 @@ class DayTenSolution : DayOfCodeSolution {
             part2Entry
         ]
     }
-    
-    enum DaySevenSolutionError: Error {
-        case AmplifierOutputWasInvalid
-    }
-
 }
