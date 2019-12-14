@@ -46,9 +46,14 @@ class DayFiveSolution : DayOfCodeSolution {
         return output[0]
     }
     
+    public override func heading() -> [UIEntry] {
+        return [
+            UIEntry(withId: 0, thatDisplays: "Day 5 Solution"),
+        ]
+    }
+    
     public override func execute() -> [UIEntry] {
         var result: [UIEntry] = []
-        result.append(UIEntry(withId: 0, thatDisplays: "Day 5 Solution"))
         
         result.append(contentsOf: getListForFunction(1, method: calculatePart1, labeledWith: "Part 1"))
 

@@ -13,19 +13,34 @@ public struct UIEntry {
     public var label: String?
     public var message: String
     public var isError: Bool
+    public var isMonospaced: Bool
+    public var size: Float
 
-    init(withId id: Int, thatDisplays message: String, labeledWith label: String? = nil, isError: Bool = false) {
+    init(withId id: Int, thatDisplays message: String, labeledWith label: String? = nil, isError: Bool = false, isMonospaced: Bool = false, size: Float=16.0) {
         self.id = id
         self.message = message
         self.label = label
         self.isError = isError
+        self.isMonospaced = isMonospaced
+        self.size = size
     }
 }
 
+extension UIEntry: Identifiable {
+    
+}
+
 public class DayOfCodeSolution {
-    public func execute() -> [UIEntry] {
+    
+    public func heading() -> [UIEntry] {
         return [
             UIEntry(withId: 0, thatDisplays: "This is the Prototype Day of Code")
+        ]
+    }
+    
+    public func execute() -> [UIEntry] {
+        return [
+            UIEntry(withId: 0, thatDisplays: "This is the result of prototype")
         ]
     }
     
@@ -52,13 +67,15 @@ public class DayOfCodeSolution {
         }
     }
     
-    func getEntryForStringFunction(_ id: Int, method: () throws -> String, labeledWith label: String) -> UIEntry {
+    func getEntryForStringFunction(_ id: Int, method: () throws -> String, labeledWith label: String, monospaced: Bool = false) -> UIEntry {
         do {
             let result = try method()
             return UIEntry(
                 withId: id,
                 thatDisplays: result,
-                labeledWith: label
+                labeledWith: label,
+                isMonospaced: monospaced,
+                size: 9
             )
         } catch {
             return UIEntry(
@@ -70,7 +87,7 @@ public class DayOfCodeSolution {
         }
     }
     
-    func getListForFunction(_ id: Int, method: () throws -> [Int], labeledWith label: String) -> [UIEntry] {
+    func getListForFunction(_ id: Int, method: () throws -> [Int], labeledWith label: String, monospaced: Bool = false) -> [UIEntry] {
         do {
             let results = try method()
             var resultList: [UIEntry] = [UIEntry(
@@ -83,7 +100,8 @@ public class DayOfCodeSolution {
                 resultList.append(UIEntry(
                     withId: id + i,
                     thatDisplays: String(result),
-                    labeledWith: String(i)
+                    labeledWith: String(i),
+                    isMonospaced: monospaced
                 ))
                 i += 1
             }
@@ -140,8 +158,32 @@ public class SolutionController {
         current = i
     }
     
+    public func hasPrev() -> Bool {
+        return current > 0
+    }
+    
+    public func hasNext() -> Bool {
+        return current < (solutions.count - 1)
+    }
+    
+    public func selectPrev() {
+        if hasPrev() {
+            current-=1
+        }
+    }
+    
+    public func selectNext() {
+        if hasNext() {
+            current+=1
+        }
+    }
+    
     public func execute() -> [UIEntry] {
         return solutions[current].execute()
+    }
+    
+    public func heading() -> [UIEntry] {
+        return solutions[current].heading()
     }
 }
 

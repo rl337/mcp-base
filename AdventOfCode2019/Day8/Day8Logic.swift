@@ -69,12 +69,17 @@ class DayEightSolution : DayOfCodeSolution {
         return result
     }
     
-    public override func execute() -> [UIEntry] {
-        let part1Entry = getEntryForFunction(1, method: calculatePart1, labeledWith: "Part 1")
-        let part2Entry = getEntryForStringFunction(2, method: calculatePart2, labeledWith: "Part 2")
-        
+    public override func heading() -> [UIEntry] {
         return [
             UIEntry(withId: 0, thatDisplays: "Day 8 Solution"),
+        ]
+    }
+    
+    public override func execute() -> [UIEntry] {
+        let part1Entry = getEntryForFunction(1, method: calculatePart1, labeledWith: "Part 1")
+        let part2Entry = getEntryForStringFunction(2, method: calculatePart2, labeledWith: "Part 2", monospaced: true)
+        
+        return [
             part1Entry,
             part2Entry
         ]

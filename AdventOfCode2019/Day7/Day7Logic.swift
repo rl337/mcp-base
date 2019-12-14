@@ -137,12 +137,17 @@ class DaySevenSolution : DayOfCodeSolution {
         return try findMaximumThrustSettingPart2(code: code)
     }
     
+    public override func heading() -> [UIEntry] {
+        return [
+            UIEntry(withId: 0, thatDisplays: "Day 7 Solution"),
+        ]
+    }
+    
     public override func execute() -> [UIEntry] {
         let part1Entry = getEntryForFunction(1, method: calculatePart1, labeledWith: "Part 1")
         let part2Entry = getEntryForFunction(2, method: calculatePart2, labeledWith: "Part 2")
         
         return [
-            UIEntry(withId: 0, thatDisplays: "Day 7 Solution"),
             part1Entry,
             part2Entry
         ]

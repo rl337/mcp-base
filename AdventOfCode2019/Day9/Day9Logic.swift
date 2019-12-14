@@ -48,12 +48,17 @@ class DayNineSolution : DayOfCodeSolution {
         return machine.output()
     }
     
+    public override func heading() -> [UIEntry] {
+        return [
+            UIEntry(withId: 0, thatDisplays: "Day 9 Solution")
+        ]
+    }
+    
     public override func execute() -> [UIEntry] {
         let part1Entry = getListForFunction(100, method: calculatePart1, labeledWith: "Part 1")
         let part2Entry = getListForFunction(200, method: calculatePart2, labeledWith: "Part 2")
         
         var result: [UIEntry] = [
-            UIEntry(withId: 0, thatDisplays: "Day 9 Solution")
         ]
         result.append(contentsOf: part1Entry)
         result.append(contentsOf: part2Entry)

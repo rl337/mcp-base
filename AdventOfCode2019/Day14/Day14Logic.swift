@@ -25,13 +25,22 @@ class DayFourteenSolution : DayOfCodeSolution {
     
     func fuelWithOre(recipes: String, ore: Int) throws -> Int {
         let oreFor1Fuel = try oreToProduceNFuel(recipes: recipes, n: 1)
-        var estimate = ore / oreFor1Fuel
-        while try oreToProduceNFuel(recipes: recipes, n: estimate) < ore {
-            estimate += 1000
-        }
         
-        while try oreToProduceNFuel(recipes: recipes, n: estimate) > ore {
-            estimate -= 1
+        var left = 0
+        var estimate = ore / oreFor1Fuel
+        var right = estimate * 4
+        while right - left > 1 {
+            let produced = try oreToProduceNFuel(recipes: recipes, n: estimate)
+            if produced == ore {
+                return estimate
+            }
+            
+            if produced < ore {
+                left = estimate
+            } else {
+                right = estimate
+            }
+            estimate = (left + right) / 2
         }
         
         return estimate
@@ -45,12 +54,18 @@ class DayFourteenSolution : DayOfCodeSolution {
         return try fuelWithOre(recipes: recipes, ore: ore)
     }
     
+    
+    public override func heading() -> [UIEntry] {
+        return [
+            UIEntry(withId: 0, thatDisplays: "Day 14 Solution"),
+        ]
+    }
+    
     public override func execute() -> [UIEntry] {
         let part1Entry = getEntryForFunction(1, method: calculatePart1, labeledWith: "Part 1")
         let part2Entry = getEntryForFunction(2, method: calculatePart2, labeledWith: "Part 2")
         
         return [
-            UIEntry(withId: 0, thatDisplays: "Day 11 Solution"),
             part1Entry,
             part2Entry
         ]
