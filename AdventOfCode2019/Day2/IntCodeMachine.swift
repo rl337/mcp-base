@@ -48,6 +48,13 @@ class VirtualArray {
     func asArray() -> [Int] {
         return real
     }
+    
+    func clone() -> VirtualArray {
+        let result = VirtualArray()
+        result.real = self.real
+        result.virtual = self.virtual
+        return result
+    }
 }
 
 struct DecodedOpCode {
@@ -106,6 +113,18 @@ class IntCodeMachine {
         if inputs.count > 0 {
             inputArray.append(contentsOf: inputs)
         }
+    }
+    
+    func clone() -> IntCodeMachine {
+        let result = IntCodeMachine(withCode: [])
+        result.code = self.code.clone()
+        result.ip = self.ip
+        result.relativeBase = self.relativeBase
+        result.inputArray = self.inputArray
+        result.outputArray = self.outputArray
+        result.halted = self.halted
+        result.beyondMemory = self.beyondMemory
+        return result
     }
     
     func valueAtIPOffsetWithMode(atOffset offset: Int, usingMode mode: Int = 0) throws -> Int {
