@@ -7,3 +7,40 @@
 //
 
 import Foundation
+
+class DaySixteenSolution : DayOfCodeSolution {
+    
+    func calculatePart1() throws -> String {
+        let day16InputFile = getFileFromProject(named: "Day16Input.txt")
+        let input = trim(try String(contentsOf: day16InputFile))
+        let fft = try FlawedFrequencyTransmission(rawSignal: input)
+        let result = try fft.phase(phase: 100)[0...7]
+        return "\(result)"
+    }
+    
+    func calculatePart2() throws -> String {
+        let day16InputFile = getFileFromProject(named: "Day16Input.txt")
+        let input = trim(try String(contentsOf: day16InputFile))
+        let fft = try FlawedFrequencyTransmission(rawSignal: input)
+        let result = try fft.phase(phase: 0)[0...7]
+
+        return "\(result)"
+    }
+    
+    public override func heading() -> [UIEntry] {
+        return [
+            UIEntry(withId: 0, thatDisplays: "Day 16 Solution"),
+        ]
+    }
+    
+    public override func execute() -> [UIEntry] {
+        let part1Entry = getEntryForStringFunction(1, method: calculatePart1, labeledWith: "Part 1")
+        let part2Entry = getEntryForStringFunction(2, method: calculatePart2, labeledWith: "Part 2")
+        
+        return [
+            part1Entry,
+            part2Entry
+        ]
+    }
+
+}

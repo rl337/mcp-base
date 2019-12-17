@@ -67,7 +67,18 @@ public class DayOfCodeSolution {
         }
     }
     
-    func getEntryForStringFunction(_ id: Int, method: () throws -> String, labeledWith label: String, monospaced: Bool = false) -> UIEntry {
+    func trim(_ value: String) -> String {
+        var copy = value
+        while copy.first == " " || copy.first == "\n" {
+            copy.removeFirst()
+        }
+        while copy.last == " " || copy.last == "\n" {
+            copy.removeLast()
+        }
+        return copy
+    }
+    
+    func getEntryForStringFunction(_ id: Int, method: () throws -> String, labeledWith label: String, monospaced: Bool = false, size: Float = 9) -> UIEntry {
         do {
             let result = try method()
             return UIEntry(
@@ -75,7 +86,7 @@ public class DayOfCodeSolution {
                 thatDisplays: result,
                 labeledWith: label,
                 isMonospaced: monospaced,
-                size: 9
+                size: size
             )
         } catch {
             return UIEntry(
@@ -141,6 +152,7 @@ public class SolutionController {
                     DayTwelveSolution(),
                     DayFourteenSolution(),
                     DayFifteenSolution(),
+                    DaySixteenSolution(),
                 ]
             )
             return instance!
