@@ -9,6 +9,7 @@
 import SwiftUI
 
 
+
 struct OutputText: View {
     var entry: UIEntry
     
@@ -121,7 +122,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             SolutionNavigationBar(parent: self)
-            UIEntryList(entries: headerContent)
+            UIEntryList(entries: headerContent).frame(height: 100)
             Spacer()
             UIEntryList(entries: solutionContent)
         }

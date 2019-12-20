@@ -26,6 +26,110 @@ public struct UIEntry {
     }
 }
 
+public struct BitmapPoint: Hashable {
+    var x: Int
+    var y: Int
+    
+    init(_ x: Int, _ y: Int) {
+        self.x = x
+        self.y = y
+    }
+    
+    var north: BitmapPoint {
+        BitmapPoint(self.x, self.y-1)
+    }
+    
+    var south: BitmapPoint {
+        BitmapPoint(self.x, self.y+1)
+    }
+    
+    var east: BitmapPoint {
+        BitmapPoint(self.x-1, self.y)
+    }
+    
+    var west: BitmapPoint {
+        BitmapPoint(self.x+1, self.y)
+    }
+}
+
+public struct SparseBitmap {
+    var points: [BitmapPoint: Int]
+    
+    var minX: Int? {
+        get {
+            let min = self.points.min { $0.key.x < $1.key.x }
+            return min?.key.x
+        }
+    }
+    
+    var maxX: Int? {
+        get {
+            let max = self.points.max { $0.key.x < $1.key.x }
+            return max?.key.x
+        }
+    }
+    
+    var minY: Int? {
+        get {
+            let min = self.points.min { $0.key.y < $1.key.y }
+            return min?.key.y
+        }
+    }
+    
+    var maxY: Int? {
+        get {
+            let max = self.points.max { $0.key.y < $1.key.y }
+            return max?.key.y
+        }
+    }
+    
+    init(_ points: [BitmapPoint: Int] = [:]) {
+        self.points = [:]
+        for point in points {
+            self.points[point.key] = point.value
+        }
+    }
+    
+    func northValue(_ point: BitmapPoint) -> Int? {
+        return self.points[point.north]
+    }
+    
+    func southValue(_ point: BitmapPoint) -> Int? {
+        return self.points[point.south]
+    }
+    
+    func eastValue(_ point: BitmapPoint) -> Int? {
+        return self.points[point.east]
+    }
+    
+    func westValue(_ point: BitmapPoint) -> Int? {
+        return self.points[point.west]
+    }
+    
+    func asBitmap(mapping: [Int?:Character]) -> String {
+        guard
+            self.points.count > 0,
+            let minX = self.minX,
+            let maxX = self.maxX,
+            let minY = self.minY,
+            let maxY = self.maxY else {
+            return ""
+        }
+        
+        let width = maxX - minX
+        var result: String = "\n"
+        for y in minY...maxY {
+            var row: [Character] = Array(repeating: "#", count: width+1)
+            for x in 0...width {
+                row[x] = mapping[self.points[BitmapPoint(maxX - x, minY + y)]] ?? "?"
+            }
+            result.append(contentsOf: String(row))
+            result.append(contentsOf: String("\n"))
+        }
+        return result
+    }
+}
+
 extension UIEntry: Identifiable {
     
 }
@@ -65,17 +169,6 @@ public class DayOfCodeSolution {
                 isError: true
             )
         }
-    }
-    
-    func trim(_ value: String) -> String {
-        var copy = value
-        while copy.first == " " || copy.first == "\n" {
-            copy.removeFirst()
-        }
-        while copy.last == " " || copy.last == "\n" {
-            copy.removeLast()
-        }
-        return copy
     }
     
     func getEntryForStringFunction(_ id: Int, method: () throws -> String, labeledWith label: String, monospaced: Bool = false, size: Float = 9) -> UIEntry {
@@ -153,6 +246,7 @@ public class SolutionController {
                     DayFourteenSolution(),
                     DayFifteenSolution(),
                     DaySixteenSolution(),
+                    DaySeventeenSolution(),
                 ]
             )
             return instance!

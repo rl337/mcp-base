@@ -12,7 +12,7 @@ class DaySixteenSolution : DayOfCodeSolution {
     
     func calculatePart1() throws -> String {
         let day16InputFile = getFileFromProject(named: "Day16Input.txt")
-        let input = trim(try String(contentsOf: day16InputFile))
+        let input = try String(contentsOf: day16InputFile).trim()
         let fft = try FlawedFrequencyTransmission(rawSignal: input)
         let result = try fft.phase(phase: 100)[0...7]
         return "\(result)"
@@ -20,7 +20,7 @@ class DaySixteenSolution : DayOfCodeSolution {
     
     func calculatePart2() throws -> String {
         let day16InputFile = getFileFromProject(named: "Day16Input.txt")
-        let input = trim(try String(contentsOf: day16InputFile))
+        let input = try String(contentsOf: day16InputFile).trim()
         let fft = try FlawedFrequencyTransmission(rawSignal: input)
         let result = try fft.phase(phase: 0)[0...7]
 

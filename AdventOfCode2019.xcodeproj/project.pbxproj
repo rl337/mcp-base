@@ -22,6 +22,14 @@
 		6241D09323A767F80043ECD0 /* Day16Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D09223A767F80043ECD0 /* Day16Logic.swift */; };
 		6241D09523A7689C0043ECD0 /* FlawedFrequencyTransmission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D09423A7689C0043ECD0 /* FlawedFrequencyTransmission.swift */; };
 		6241D09723A76BE10043ECD0 /* Day16Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D09623A76BE10043ECD0 /* Day16Tests.swift */; };
+		6241D09A23A8A0DA0043ECD0 /* Day17Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6241D09923A8A0DA0043ECD0 /* Day17Input.txt */; };
+		6241D09C23A8A1270043ECD0 /* VacuumRobotMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D09B23A8A1270043ECD0 /* VacuumRobotMapper.swift */; };
+		6241D09E23A8A84B0043ECD0 /* Day17Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D09D23A8A84B0043ECD0 /* Day17Logic.swift */; };
+		6241D0A123A9ED780043ECD0 /* Day18Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6241D0A023A9ED780043ECD0 /* Day18Input.txt */; };
+		6241D0A323A9EDD00043ECD0 /* SlimeMoldShortestPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A223A9EDD00043ECD0 /* SlimeMoldShortestPath.swift */; };
+		6241D0A523A9EF490043ECD0 /* UsefulExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A423A9EF490043ECD0 /* UsefulExtensions.swift */; };
+		6241D0A723A9F3890043ECD0 /* Day18Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A623A9F3890043ECD0 /* Day18Tests.swift */; };
+		6241D0AA23AB52190043ECD0 /* KeyCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A923AB52190043ECD0 /* KeyCollector.swift */; };
 		624B9A36239E1E830012F095 /* Day9Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A35239E1E830012F095 /* Day9Tests.swift */; };
 		624B9A39239E2AAB0012F095 /* Day9Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 624B9A38239E2AAB0012F095 /* Day9Input.txt */; };
 		624B9A3B239E2AB90012F095 /* Day9Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A3A239E2AB90012F095 /* Day9Logic.swift */; };
@@ -104,6 +112,14 @@
 		6241D09223A767F80043ECD0 /* Day16Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day16Logic.swift; sourceTree = "<group>"; };
 		6241D09423A7689C0043ECD0 /* FlawedFrequencyTransmission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlawedFrequencyTransmission.swift; sourceTree = "<group>"; };
 		6241D09623A76BE10043ECD0 /* Day16Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day16Tests.swift; sourceTree = "<group>"; };
+		6241D09923A8A0DA0043ECD0 /* Day17Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day17Input.txt; sourceTree = "<group>"; };
+		6241D09B23A8A1270043ECD0 /* VacuumRobotMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacuumRobotMapper.swift; sourceTree = "<group>"; };
+		6241D09D23A8A84B0043ECD0 /* Day17Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day17Logic.swift; sourceTree = "<group>"; };
+		6241D0A023A9ED780043ECD0 /* Day18Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day18Input.txt; sourceTree = "<group>"; };
+		6241D0A223A9EDD00043ECD0 /* SlimeMoldShortestPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimeMoldShortestPath.swift; sourceTree = "<group>"; };
+		6241D0A423A9EF490043ECD0 /* UsefulExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulExtensions.swift; sourceTree = "<group>"; };
+		6241D0A623A9F3890043ECD0 /* Day18Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day18Tests.swift; sourceTree = "<group>"; };
+		6241D0A923AB52190043ECD0 /* KeyCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCollector.swift; sourceTree = "<group>"; };
 		624B9A35239E1E830012F095 /* Day9Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day9Tests.swift; sourceTree = "<group>"; };
 		624B9A38239E2AAB0012F095 /* Day9Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day9Input.txt; sourceTree = "<group>"; };
 		624B9A3A239E2AB90012F095 /* Day9Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day9Logic.swift; sourceTree = "<group>"; };
@@ -224,6 +240,33 @@
 			path = Day16;
 			sourceTree = "<group>";
 		};
+		6241D09823A8A0A30043ECD0 /* Day17 */ = {
+			isa = PBXGroup;
+			children = (
+				6241D09923A8A0DA0043ECD0 /* Day17Input.txt */,
+				6241D09B23A8A1270043ECD0 /* VacuumRobotMapper.swift */,
+				6241D09D23A8A84B0043ECD0 /* Day17Logic.swift */,
+			);
+			path = Day17;
+			sourceTree = "<group>";
+		};
+		6241D09F23A9EC930043ECD0 /* Day18 */ = {
+			isa = PBXGroup;
+			children = (
+				6241D0A023A9ED780043ECD0 /* Day18Input.txt */,
+				6241D0A223A9EDD00043ECD0 /* SlimeMoldShortestPath.swift */,
+				6241D0A923AB52190043ECD0 /* KeyCollector.swift */,
+			);
+			path = Day18;
+			sourceTree = "<group>";
+		};
+		6241D0A823AA9ABD0043ECD0 /* UsefulTypes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UsefulTypes;
+			sourceTree = "<group>";
+		};
 		624B9A37239E2A830012F095 /* Day9 */ = {
 			isa = PBXGroup;
 			children = (
@@ -276,6 +319,8 @@
 		629C1A1D23938F5600920687 /* AdventOfCode2019 */ = {
 			isa = PBXGroup;
 			children = (
+				6241D09F23A9EC930043ECD0 /* Day18 */,
+				6241D09823A8A0A30043ECD0 /* Day17 */,
 				6241D08F23A767C20043ECD0 /* Day16 */,
 				6241D08823A6100C0043ECD0 /* Day15 */,
 				6241D07F23A4A8BE0043ECD0 /* Day14 */,
@@ -299,6 +344,8 @@
 				629C1A2C23938F5900920687 /* Info.plist */,
 				629C1A2623938F5900920687 /* Preview Content */,
 				629C1A58239434E600920687 /* DayOfCodeSolution.swift */,
+				6241D0A423A9EF490043ECD0 /* UsefulExtensions.swift */,
+				6241D0A823AA9ABD0043ECD0 /* UsefulTypes */,
 			);
 			path = AdventOfCode2019;
 			sourceTree = "<group>";
@@ -328,6 +375,7 @@
 				62B4D91823A2145000E00400 /* Day12Tests.swift */,
 				6241D08423A4B1CF0043ECD0 /* Day14Tests.swift */,
 				6241D09623A76BE10043ECD0 /* Day16Tests.swift */,
+				6241D0A623A9F3890043ECD0 /* Day18Tests.swift */,
 			);
 			path = AdventOfCode2019Tests;
 			sourceTree = "<group>";
@@ -522,6 +570,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6241D09A23A8A0DA0043ECD0 /* Day17Input.txt in Resources */,
 				6241D08A23A6104C0043ECD0 /* Day15Input.txt in Resources */,
 				629C1A6723962BFF00920687 /* Day3Input.txt in Resources */,
 				624B9A4723A0BB5B0012F095 /* Day11Input.txt in Resources */,
@@ -531,6 +580,7 @@
 				6241D08123A4A9030043ECD0 /* Day14Input.txt in Resources */,
 				62B4D91323A20F4700E00400 /* Day12Input.txt in Resources */,
 				62F591782398DB5B007C951A /* Day5Input.txt in Resources */,
+				6241D0A123A9ED780043ECD0 /* Day18Input.txt in Resources */,
 				629C1A2823938F5900920687 /* Preview Assets.xcassets in Resources */,
 				629C1A5C2394E00200920687 /* Day2Input.txt in Resources */,
 				629C1A2523938F5900920687 /* Assets.xcassets in Resources */,
@@ -568,15 +618,19 @@
 				629C1A50239396A800920687 /* IntFileIterator.swift in Sources */,
 				629C1A1F23938F5600920687 /* AppDelegate.swift in Sources */,
 				62633AD723A2A0E3002E0815 /* ByteRadix.swift in Sources */,
+				6241D0AA23AB52190043ECD0 /* KeyCollector.swift in Sources */,
+				6241D0A523A9EF490043ECD0 /* UsefulExtensions.swift in Sources */,
 				629C1A602394E10200920687 /* IntCodeMachine.swift in Sources */,
 				6241D09523A7689C0043ECD0 /* FlawedFrequencyTransmission.swift in Sources */,
 				6241D08323A4A9160043ECD0 /* NanoFactory.swift in Sources */,
 				629C1A6923962C8800920687 /* Grid.swift in Sources */,
 				624B9A44239F7F500012F095 /* Day10Logic.swift in Sources */,
 				629C1A5E2394E02700920687 /* Day2Logic.swift in Sources */,
+				6241D0A323A9EDD00043ECD0 /* SlimeMoldShortestPath.swift in Sources */,
 				624B9A4923A0BBC00012F095 /* PanelGrid.swift in Sources */,
 				624B9A4B23A0C8050012F095 /* Day11Logic.swift in Sources */,
 				629C1A6523962B4200920687 /* Day3Logic.swift in Sources */,
+				6241D09C23A8A1270043ECD0 /* VacuumRobotMapper.swift in Sources */,
 				62B4D91723A210BA00E00400 /* GravitySystem.swift in Sources */,
 				629C1A2123938F5600920687 /* SceneDelegate.swift in Sources */,
 				62C83617239B81D000609DF8 /* Day7Logic.swift in Sources */,
@@ -589,6 +643,7 @@
 				62C83622239CCB1D00609DF8 /* spaceimageformat.swift in Sources */,
 				624B9A40239F61E70012F095 /* AsteroidField.swift in Sources */,
 				629C1A2323938F5600920687 /* ContentView.swift in Sources */,
+				6241D09E23A8A84B0043ECD0 /* Day17Logic.swift in Sources */,
 				629C1A522393A34A00920687 /* DayOneLogic.swift in Sources */,
 				622E3EB5239A1DBB0069C306 /* Day6Logic.swift in Sources */,
 				6241D09323A767F80043ECD0 /* Day16Logic.swift in Sources */,
@@ -612,6 +667,7 @@
 				622E3EB9239A219A0069C306 /* Day6Tests.swift in Sources */,
 				629C1A70239778E100920687 /* Day4Tests.swift in Sources */,
 				62F591752398D8BD007C951A /* Day5Tests.swift in Sources */,
+				6241D0A723A9F3890043ECD0 /* Day18Tests.swift in Sources */,
 				624B9A42239F67680012F095 /* Day10Tests.swift in Sources */,
 				62B4D91923A2145000E00400 /* Day12Tests.swift in Sources */,
 			);
