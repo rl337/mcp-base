@@ -30,6 +30,9 @@
 		6241D0A523A9EF490043ECD0 /* UsefulExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A423A9EF490043ECD0 /* UsefulExtensions.swift */; };
 		6241D0A723A9F3890043ECD0 /* Day18Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A623A9F3890043ECD0 /* Day18Tests.swift */; };
 		6241D0AA23AB52190043ECD0 /* KeyCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A923AB52190043ECD0 /* KeyCollector.swift */; };
+		6241D0AD23AC82410043ECD0 /* Day19Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6241D0AC23AC82400043ECD0 /* Day19Input.txt */; };
+		6241D0B123AC84870043ECD0 /* Day19Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0B023AC84870043ECD0 /* Day19Logic.swift */; };
+		6241D0B323AC84FC0043ECD0 /* TractorBeamMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0B223AC84FC0043ECD0 /* TractorBeamMapper.swift */; };
 		624B9A36239E1E830012F095 /* Day9Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A35239E1E830012F095 /* Day9Tests.swift */; };
 		624B9A39239E2AAB0012F095 /* Day9Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 624B9A38239E2AAB0012F095 /* Day9Input.txt */; };
 		624B9A3B239E2AB90012F095 /* Day9Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B9A3A239E2AB90012F095 /* Day9Logic.swift */; };
@@ -120,6 +123,9 @@
 		6241D0A423A9EF490043ECD0 /* UsefulExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulExtensions.swift; sourceTree = "<group>"; };
 		6241D0A623A9F3890043ECD0 /* Day18Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day18Tests.swift; sourceTree = "<group>"; };
 		6241D0A923AB52190043ECD0 /* KeyCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCollector.swift; sourceTree = "<group>"; };
+		6241D0AC23AC82400043ECD0 /* Day19Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day19Input.txt; sourceTree = "<group>"; };
+		6241D0B023AC84870043ECD0 /* Day19Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day19Logic.swift; sourceTree = "<group>"; };
+		6241D0B223AC84FC0043ECD0 /* TractorBeamMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TractorBeamMapper.swift; sourceTree = "<group>"; };
 		624B9A35239E1E830012F095 /* Day9Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day9Tests.swift; sourceTree = "<group>"; };
 		624B9A38239E2AAB0012F095 /* Day9Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day9Input.txt; sourceTree = "<group>"; };
 		624B9A3A239E2AB90012F095 /* Day9Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day9Logic.swift; sourceTree = "<group>"; };
@@ -267,6 +273,16 @@
 			path = UsefulTypes;
 			sourceTree = "<group>";
 		};
+		6241D0AB23AC820F0043ECD0 /* Day19 */ = {
+			isa = PBXGroup;
+			children = (
+				6241D0B223AC84FC0043ECD0 /* TractorBeamMapper.swift */,
+				6241D0AC23AC82400043ECD0 /* Day19Input.txt */,
+				6241D0B023AC84870043ECD0 /* Day19Logic.swift */,
+			);
+			path = Day19;
+			sourceTree = "<group>";
+		};
 		624B9A37239E2A830012F095 /* Day9 */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +335,7 @@
 		629C1A1D23938F5600920687 /* AdventOfCode2019 */ = {
 			isa = PBXGroup;
 			children = (
+				6241D0AB23AC820F0043ECD0 /* Day19 */,
 				6241D09F23A9EC930043ECD0 /* Day18 */,
 				6241D09823A8A0A30043ECD0 /* Day17 */,
 				6241D08F23A767C20043ECD0 /* Day16 */,
@@ -586,6 +603,7 @@
 				629C1A2523938F5900920687 /* Assets.xcassets in Resources */,
 				629C1A572393B04300920687 /* Day1Input.txt in Resources */,
 				62C83619239B81FB00609DF8 /* Day7Input.txt in Resources */,
+				6241D0AD23AC82410043ECD0 /* Day19Input.txt in Resources */,
 				622E3EB3239A1DA00069C306 /* Day6Input.txt in Resources */,
 				6241D09123A767E90043ECD0 /* Day16Input.txt in Resources */,
 				624B9A39239E2AAB0012F095 /* Day9Input.txt in Resources */,
@@ -616,8 +634,10 @@
 				6241D08723A544070043ECD0 /* Day14Logic.swift in Sources */,
 				6241D08C23A610690043ECD0 /* Day15Logic.swift in Sources */,
 				629C1A50239396A800920687 /* IntFileIterator.swift in Sources */,
+				6241D0B123AC84870043ECD0 /* Day19Logic.swift in Sources */,
 				629C1A1F23938F5600920687 /* AppDelegate.swift in Sources */,
 				62633AD723A2A0E3002E0815 /* ByteRadix.swift in Sources */,
+				6241D0B323AC84FC0043ECD0 /* TractorBeamMapper.swift in Sources */,
 				6241D0AA23AB52190043ECD0 /* KeyCollector.swift in Sources */,
 				6241D0A523A9EF490043ECD0 /* UsefulExtensions.swift in Sources */,
 				629C1A602394E10200920687 /* IntCodeMachine.swift in Sources */,
