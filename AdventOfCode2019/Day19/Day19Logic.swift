@@ -34,19 +34,17 @@ class DayNineteenSolution : DayOfCodeSolution {
         return result
     }
     
-    func displayTractorBeam() throws {
+    func displayTractorBeam() throws -> String {
         let day19InputFile = getFileFromProject(named: "Day19Input.txt")
         let i = try IntFileIterator(contentsOf: day19InputFile, delimitedBy: ",")
         let code = i.array()
         
-        
-        
         let mapper = TractorBeamMapper()
         try mapper.mapTractorBeam(code)
         
-        mapper.map.asBitmap(mapping: [
-            Character("#").asInt(): Character("#"),
-            Character(".").asInt(): Character("."),
+        return mapper.map.asBitmap(mapping: [
+            1: Character("#"),
+            nil: Character("."),
         ])
     }
     
@@ -57,11 +55,14 @@ class DayNineteenSolution : DayOfCodeSolution {
     }
     
     public override func execute() -> [UIEntry] {
-        let part1Entry = getEntryForFunction(1, method: calculatePart1, labeledWith: "Part 1")
-        let part2Entry = getListForFunction(2, method: calculatePart2, labeledWith: "Part 2")
+        let part1Entry = getEntryForFunction(100, method: calculatePart1, labeledWith: "Part 1")
+        let displayBeam =  getEntryForStringFunction(200, method: displayTractorBeam, labeledWith: "Beam Image", monospaced: true)
+
+        let part2Entry = getListForFunction(300, method: calculatePart2, labeledWith: "Part 2")
         
         var result =  [
             part1Entry,
+            displayBeam,
         ]
         
         result.append(contentsOf: part2Entry)

@@ -32,8 +32,8 @@ public class TractorBeamMapper {
     
     func mapTractorBeam(_ code: [Int], _ width: Int = 50, _ height: Int = 50, _ onlyLastRow: Bool = false, _ onlyLeadingColumn: Bool = false) throws {
         
-        for y in (onlyLastRow ? height-1 : 0)..<width {
-            for x in 0..<height {
+        for y in (onlyLastRow ? height-1 : 0)..<height {
+            for x in 0..<width {
                 let output = try runMachine(code, x, y)
                 
                 if output == 1 {

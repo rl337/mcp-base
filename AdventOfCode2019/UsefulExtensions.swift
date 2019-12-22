@@ -57,3 +57,13 @@ extension Array where Element == Character {
         return self.map { $0.asInt() }
     }
 }
+
+extension Array where Element == Int {
+    func asAsciiString() -> String {
+        return String(self.map { $0.asCharacter() })
+    }
+    
+    func asStringArray() -> [String] {
+        return self.map { String($0) }
+    }
+}
