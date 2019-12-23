@@ -166,6 +166,10 @@ class IntCodeMachine {
         return code.asArray()
     }
     
+    func input() -> [Int] {
+        return inputArray
+    }
+    
     func output() -> [Int] {
         return outputArray
     }

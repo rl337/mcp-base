@@ -42,6 +42,12 @@ class DayTwentyTwoSolution : DayOfCodeSolution {
         return 0
     }
     
+    public override func heading() -> [UIEntry] {
+        return [
+            UIEntry(withId: 0, thatDisplays: "Day 22 Solution"),
+        ]
+    }
+    
     public override func execute() -> [UIEntry] {
         let part1Entry = getEntryForFunction(10, method: calculatePart1, labeledWith: "Part 1")
         let part2Entry = getEntryForFunction(40, method: calculatePart2, labeledWith: "Part 2")
