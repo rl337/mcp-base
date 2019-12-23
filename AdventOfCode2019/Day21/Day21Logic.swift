@@ -18,12 +18,7 @@ class DayTwentyOneSolution : DayOfCodeSolution {
         machine.addInput(values:
             // Check if 4 spaces away is solid, jump if any holes exist between
             Array<Character>("""
-NOT T T
-AND A T
-AND B T
-AND C T
-NOT T J
-AND D J
+OR D J
 WALK
 
 """
@@ -46,8 +41,40 @@ WALK
         return output.asStringArray().joined(separator: ", ")
     }
     
-    func calculatePart2() throws -> Int {
-        0
+    func calculatePart2() throws -> String {
+                let day21InputFile = getFileFromProject(named: "Day21Input.txt")
+                let i = try IntFileIterator(contentsOf: day21InputFile, delimitedBy: ",")
+                let code = i.array()
+                let machine = IntCodeMachine(withCode: code)
+                machine.addInput(values:
+                    // Check if 4 spaces away is solid, jump if any holes exist between
+                    Array<Character>("""
+        NOT T T
+        AND A T
+        AND B T
+        AND C T
+        NOT T J
+        AND D J
+        WALK
+
+        """
+                    ).asIntArray()
+                )
+                try machine.run()
+                var output = machine.output()
+
+                if output.count > 1 {
+                    var resultList: [String] = []
+                    var damage = 0
+                    if output.last! > 255 {
+                        damage = output.removeLast()
+
+                    }
+                    resultList.append(output.asAsciiString())
+                    resultList.append(String(damage))
+                    return resultList.joined(separator: "\n")
+                }
+                return output.asStringArray().joined(separator: ", ")
     }
     
     public override func heading() -> [UIEntry] {
@@ -58,7 +85,7 @@ WALK
     
     public override func execute() -> [UIEntry] {
         let part1Entry = getEntryForStringFunction(1, method: calculatePart1, labeledWith: "Part 1", monospaced: true)
-        let part2Entry = getEntryForFunction(2, method: calculatePart2, labeledWith: "Part 2")
+        let part2Entry = getEntryForStringFunction(2, method: calculatePart2, labeledWith: "Part 2", monospaced: true)
         
         let result =  [
             part1Entry,
