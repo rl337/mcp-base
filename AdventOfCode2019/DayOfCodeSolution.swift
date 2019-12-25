@@ -121,12 +121,12 @@ public struct SparseBitmap {
         for y in minY...maxY {
             var row: [Character] = Array(repeating: "#", count: width+1)
             for x in 0...width {
-                row[x] = mapping[self.points[BitmapPoint(maxX - x, minY + y)]] ?? "?"
+                row[x] = mapping[self.points[BitmapPoint(x + minX, minY + y)]] ?? "?"
             }
             result.append(contentsOf: String(row))
             result.append(contentsOf: String("\n"))
         }
-        return result
+        return result.trim()
     }
 }
 
@@ -251,6 +251,7 @@ public class SolutionController {
                     DayTwentyOneSolution(),
                     DayTwentyTwoSolution(),
                     DayTwentyThreeSolution(),
+                    DayTwentyFourSolution(),
                 ]
             )
             return instance!

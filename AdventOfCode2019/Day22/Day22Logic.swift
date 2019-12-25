@@ -17,8 +17,8 @@ class DayTwentyTwoSolution : DayOfCodeSolution {
         let deck = SpaceCardDeck(cardCount: 10007)
         try deck.runScript(script: script)
         
-        for i in 0 ..< deck.cards.count {
-            if deck.cards[i] == 2019 {
+        for i in 0 ..< deck.count! {
+            if try deck.getCard(index: i) == 2019 {
                 return i
             }
         }
@@ -33,8 +33,8 @@ class DayTwentyTwoSolution : DayOfCodeSolution {
         let deck = SpaceCardDeck(cardCount: 119315717514047)
         try deck.runScript(script: script)
         
-        for i in 0 ..< deck.cards.count {
-            if deck.cards[i] == 2019 {
+        for i in 0 ..< deck.count! {
+            if try deck.getCard(index: i) == 2019 {
                 return i
             }
         }

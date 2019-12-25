@@ -39,8 +39,6 @@ class DayTwentyThreeSolution : DayOfCodeSolution {
                     let x = output.removeFirst()
                     let y = output.removeFirst()
                     
-                    print("\(address) -> \(toAddress) x: \(x) y: \(y)")
-                    
                     if toAddress >= 0 && toAddress < network.count {
                         network[toAddress].addInput(values: [x, y])
                     }
@@ -88,8 +86,6 @@ class DayTwentyThreeSolution : DayOfCodeSolution {
                     let toAddress = output.removeFirst()
                     let x = output.removeFirst()
                     let y = output.removeFirst()
-                    
-                    print("\(address) -> \(toAddress) x: \(x) y: \(y)")
                     
                     if toAddress >= 0 && toAddress < network.count {
                         network[toAddress].addInput(values: [x, y])
