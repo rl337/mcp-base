@@ -219,6 +219,52 @@ public class DayOfCodeSolution {
             )]
         }
     }
+    
+    func getListForStringFunction(_ id: Int, method: () throws -> [String], labeledWith label: String, monospaced: Bool = false, size: Float = 9, reverse: Bool = false) -> [UIEntry] {
+        do {
+            var results = try method()
+            if reverse {
+                results.reverse()
+            }
+            var resultList: [UIEntry] = [UIEntry(
+                withId: id,
+                thatDisplays: "Output",
+                labeledWith: "#"
+            )]
+            
+            if reverse {
+                var i = results.count
+                for result in results {
+                    resultList.append(UIEntry(
+                        withId: id + i,
+                        thatDisplays: result,
+                        labeledWith: String(i),
+                        isMonospaced: monospaced
+                    ))
+                    i -= 1
+                }
+            } else {
+                var i = 1
+                for result in results {
+                    resultList.append(UIEntry(
+                        withId: id + i,
+                        thatDisplays: result,
+                        labeledWith: String(i),
+                        isMonospaced: monospaced
+                    ))
+                    i += 1
+                }
+            }
+            return resultList
+        } catch {
+            return [UIEntry(
+                withId: id,
+                thatDisplays: "\(error)",
+                labeledWith: label,
+                isError: true
+            )]
+        }
+    }
 
 }
 
@@ -243,6 +289,7 @@ public class SolutionController {
                     DayTenSolution(),
                     DayElevenSolution(),
                     DayTwelveSolution(),
+                    DayThirteenSolution(),
                     DayFourteenSolution(),
                     DayFifteenSolution(),
                     DaySixteenSolution(),
@@ -252,7 +299,7 @@ public class SolutionController {
                     DayTwentyTwoSolution(),
                     DayTwentyThreeSolution(),
                     DayTwentyFourSolution(),
-                    DayThirteenSolution(),
+                    DayTwentyFiveSolution(),
                 ]
             )
             return instance!
