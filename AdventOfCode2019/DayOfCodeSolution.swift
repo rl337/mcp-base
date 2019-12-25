@@ -252,6 +252,7 @@ public class SolutionController {
                     DayTwentyTwoSolution(),
                     DayTwentyThreeSolution(),
                     DayTwentyFourSolution(),
+                    DayThirteenSolution(),
                 ]
             )
             return instance!

@@ -90,6 +90,8 @@
 		62CC9C3023B1E5C500E74EC3 /* BugGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CC9C2F23B1E5C500E74EC3 /* BugGrid.swift */; };
 		62CC9C3223B1E75A00E74EC3 /* Day24Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CC9C3123B1E75A00E74EC3 /* Day24Tests.swift */; };
 		62E2A49123B2FEA300B81C67 /* Day24Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A49023B2FEA300B81C67 /* Day24Logic.swift */; };
+		62E2A49423B307DC00B81C67 /* Day13Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 62E2A49323B307DC00B81C67 /* Day13Input.txt */; };
+		62E2A49623B3081500B81C67 /* Day13Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A49523B3081500B81C67 /* Day13Logic.swift */; };
 		62F591752398D8BD007C951A /* Day5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F591742398D8BD007C951A /* Day5Tests.swift */; };
 		62F591782398DB5B007C951A /* Day5Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 62F591772398DB5B007C951A /* Day5Input.txt */; };
 		62F5917A2398DB7D007C951A /* Day5Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F591792398DB7D007C951A /* Day5Logic.swift */; };
@@ -202,6 +204,8 @@
 		62CC9C2F23B1E5C500E74EC3 /* BugGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugGrid.swift; sourceTree = "<group>"; };
 		62CC9C3123B1E75A00E74EC3 /* Day24Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day24Tests.swift; sourceTree = "<group>"; };
 		62E2A49023B2FEA300B81C67 /* Day24Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day24Logic.swift; sourceTree = "<group>"; };
+		62E2A49323B307DC00B81C67 /* Day13Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day13Input.txt; sourceTree = "<group>"; };
+		62E2A49523B3081500B81C67 /* Day13Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day13Logic.swift; sourceTree = "<group>"; };
 		62F591742398D8BD007C951A /* Day5Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day5Tests.swift; sourceTree = "<group>"; };
 		62F591772398DB5B007C951A /* Day5Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day5Input.txt; sourceTree = "<group>"; };
 		62F591792398DB7D007C951A /* Day5Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day5Logic.swift; sourceTree = "<group>"; };
@@ -397,6 +401,7 @@
 		629C1A1D23938F5600920687 /* AdventOfCode2019 */ = {
 			isa = PBXGroup;
 			children = (
+				62E2A49223B307AF00B81C67 /* Day13 */,
 				62CC9C2C23B1E56D00E74EC3 /* Day24 */,
 				6234DC0A23B095F2000F4944 /* Day23 */,
 				6241D0C223AFF6A80043ECD0 /* Day22 */,
@@ -553,6 +558,15 @@
 			path = Day24;
 			sourceTree = "<group>";
 		};
+		62E2A49223B307AF00B81C67 /* Day13 */ = {
+			isa = PBXGroup;
+			children = (
+				62E2A49323B307DC00B81C67 /* Day13Input.txt */,
+				62E2A49523B3081500B81C67 /* Day13Logic.swift */,
+			);
+			path = Day13;
+			sourceTree = "<group>";
+		};
 		62F591762398DB17007C951A /* Day5 */ = {
 			isa = PBXGroup;
 			children = (
@@ -674,6 +688,7 @@
 				62C83620239CCAC300609DF8 /* Day8Input.txt in Resources */,
 				629C1A2B23938F5900920687 /* LaunchScreen.storyboard in Resources */,
 				624B9A3E239F61D00012F095 /* Day10Input.txt in Resources */,
+				62E2A49423B307DC00B81C67 /* Day13Input.txt in Resources */,
 				6241D0B623ADD28F0043ECD0 /* Day20Input.txt in Resources */,
 				6241D08123A4A9030043ECD0 /* Day14Input.txt in Resources */,
 				62B4D91323A20F4700E00400 /* Day12Input.txt in Resources */,
@@ -754,6 +769,7 @@
 				6241D09E23A8A84B0043ECD0 /* Day17Logic.swift in Sources */,
 				62E2A49123B2FEA300B81C67 /* Day24Logic.swift in Sources */,
 				629C1A522393A34A00920687 /* DayOneLogic.swift in Sources */,
+				62E2A49623B3081500B81C67 /* Day13Logic.swift in Sources */,
 				622E3EB5239A1DBB0069C306 /* Day6Logic.swift in Sources */,
 				6241D09323A767F80043ECD0 /* Day16Logic.swift in Sources */,
 				6241D0C123AE6D730043ECD0 /* Day21Logic.swift in Sources */,
