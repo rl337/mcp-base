@@ -32,18 +32,14 @@ class DayNineSolution : DayOfCodeSolution {
     
     func calculatePart1() throws -> [Int] {
         let day9InputFile = getFileFromProject(named: "Day9Input.txt")
-        let i = try IntFileIterator(contentsOf: day9InputFile, delimitedBy: ",")
-        let code = i.array();
-        let machine = IntCodeMachine(withCode: code, withInput: [1])
+        let machine = try IntCodeMachine(fromURL: day9InputFile, withInput: [1])
         try machine.run()
         return machine.output()
     }
     
     func calculatePart2() throws -> [Int] {
         let day9InputFile = getFileFromProject(named: "Day9Input.txt")
-        let i = try IntFileIterator(contentsOf: day9InputFile, delimitedBy: ",")
-        let code = i.array();
-        let machine = IntCodeMachine(withCode: code, withInput: [2])
+        let machine = try IntCodeMachine(fromURL: day9InputFile, withInput: [2])
         try machine.run()
         return machine.output()
     }

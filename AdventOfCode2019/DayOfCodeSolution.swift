@@ -135,11 +135,60 @@ extension UIEntry: Identifiable {
 }
 
 public class DayOfCodeSolution {
+    let part1Solution: String?
+    let part2Solution: String?
+    
+    init(part1: String? = nil, part2: String? = nil) {
+        self.part1Solution = part1
+        self.part2Solution = part2
+    }
+    
+    convenience init(part1: Int, part2: Int) {
+        self.init(part1: String(part1), part2: String(part2))
+    }
+    
+    convenience init(part1: Int) {
+        self.init(part1: String(part1), part2: nil)
+    }
+    
+    convenience init(part1: Int, part2: Int? = nil) {
+        self.init(part1: String(part1), part2: part2 == nil ? nil: String(part2!))
+    }
+    
+    convenience init(part1: Int, part2: String) {
+        self.init(part1: String(part1), part2: part2)
+    }
     
     public func heading() -> [UIEntry] {
         return [
             UIEntry(withId: 0, thatDisplays: "This is the Prototype Day of Code")
         ]
+    }
+    
+    func fullHeading() -> [UIEntry] {
+        var headings: [UIEntry] = []
+        headings.append(contentsOf: self.heading())
+        if self.part1Solution != nil {
+            headings.append(
+                self.getEntryForConfirmedAnswer(
+                    -1,
+                    value: self.part1Solution!,
+                    labeledWith: "Part 1 Solution"
+                )
+            )
+        }
+        
+        if self.part2Solution != nil {
+            headings.append(
+                self.getEntryForConfirmedAnswer(
+                    -2,
+                    value: self.part2Solution!,
+                    labeledWith: "Part 2 Solution"
+                )
+            )
+        }
+        
+        return headings
     }
     
     public func execute() -> [UIEntry] {
@@ -169,6 +218,15 @@ public class DayOfCodeSolution {
                 isError: true
             )
         }
+    }
+    
+    func getEntryForConfirmedAnswer(_ id: Int, value: String, labeledWith label: String) -> UIEntry {
+        return UIEntry(
+            withId: id,
+            thatDisplays: value,
+            labeledWith: label
+        )
+        
     }
     
     func getEntryForStringFunction(_ id: Int, method: () throws -> String, labeledWith label: String, monospaced: Bool = false, size: Float = 9) -> UIEntry {
@@ -277,29 +335,29 @@ public class SolutionController {
         } else {
             instance = SolutionController(
                 for: [
-                    DayOneSolution(),
-                    DayTwoSolution(),
-                    DayThreeSolution(),
-                    DayFourSolution(),
-                    DayFiveSolution(),
-                    DaySixSolution(),
-                    DaySevenSolution(),
-                    DayEightSolution(),
-                    DayNineSolution(),
-                    DayTenSolution(),
-                    DayElevenSolution(),
-                    DayTwelveSolution(),
-                    DayThirteenSolution(),
-                    DayFourteenSolution(),
-                    DayFifteenSolution(),
-                    DaySixteenSolution(),
-                    DaySeventeenSolution(),
-                    DayNineteenSolution(),
-                    DayTwentyOneSolution(),
-                    DayTwentyTwoSolution(),
-                    DayTwentyThreeSolution(),
-                    DayTwentyFourSolution(),
-                    DayTwentyFiveSolution(),
+                    DayOneSolution(part1: 3336439, part2: 5001791),
+                    DayTwoSolution(part1: 4138658, part2: 7264),
+                    DayThreeSolution(part1: 1674, part2: 14012),
+                    DayFourSolution(part1: 2814, part2: 1991),
+                    DayFiveSolution(part1: 5346030, part2: 513116),
+                    DaySixSolution(part1: 147223, part2: 340),
+                    DaySevenSolution(part1: 43210, part2: 25534964),
+                    DayEightSolution(part1: 2193, part2: "YEHEF"),
+                    DayNineSolution(part1: 4234906522, part2: 60962),
+                    DayTenSolution(part1: 227, part2: 604),
+                    DayElevenSolution(part1: 2428, part2: "RJLFBUCU"),
+                    DayTwelveSolution(part1: 9139, part2: nil),
+                    DayThirteenSolution(part1: 414, part2: 20183),
+                    DayFourteenSolution(part1: 873899, part2: 1893569),
+                    DayFifteenSolution(part1: 230, part2: 288),
+                    DaySixteenSolution(part1: 53296082, part2: nil),
+                    DaySeventeenSolution(part1: 4688, part2: nil),
+                    DayNineteenSolution(part1: 158, part2: nil),
+                    DayTwentyOneSolution(part1: 19360724, part2: nil),
+                    DayTwentyTwoSolution(part1: 2514, part2: nil),
+                    DayTwentyThreeSolution(part1: 23626, part2: 19019),
+                    DayTwentyFourSolution(part1: 32776479, part2: nil),
+                    DayTwentyFiveSolution(part1: 1090617344, part2: nil),
                 ]
             )
             return instance!
@@ -343,7 +401,8 @@ public class SolutionController {
     }
     
     public func heading() -> [UIEntry] {
-        return solutions[current].heading()
+        return solutions[current].fullHeading()
     }
+        
 }
 

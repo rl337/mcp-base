@@ -12,9 +12,7 @@ class DayThirteenSolution : DayOfCodeSolution {
     
     func calculatePart1() throws -> Int {
         let day13InputFile = getFileFromProject(named: "Day13Input.txt")
-        let i = try IntFileIterator(contentsOf: day13InputFile, delimitedBy: ",")
-        let code = i.array()
-        let machine = IntCodeMachine(withCode: code)
+        let machine = try IntCodeMachine(fromURL: day13InputFile)
         
         try machine.run()
         var output = machine.output()

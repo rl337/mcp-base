@@ -33,10 +33,8 @@ class DayFiveSolution : DayOfCodeSolution {
     
     func calculatePart2() throws -> Int {
         let day5InputFile = getFileFromProject(named: "Day5Input.txt")
-        let i = try IntFileIterator(contentsOf: day5InputFile, delimitedBy: ",")
-        let code = i.array();
         
-        let machine = IntCodeMachine(withCode: code, withInput: [5])
+        let machine = try IntCodeMachine(fromURL: day5InputFile, withInput: [5])
         try machine.run()
         let output = machine.output()
         guard output.count == 1 else {

@@ -12,9 +12,7 @@ class DayTwentyOneSolution : DayOfCodeSolution {
     
     func calculatePart1() throws -> String {
         let day21InputFile = getFileFromProject(named: "Day21Input.txt")
-        let i = try IntFileIterator(contentsOf: day21InputFile, delimitedBy: ",")
-        let code = i.array()
-        let machine = IntCodeMachine(withCode: code)
+        let machine = try IntCodeMachine(fromURL: day21InputFile)
         machine.addInput(values:
             // Check if 4 spaces away is solid, jump if any holes exist between
             Array<Character>("""
@@ -43,9 +41,7 @@ WALK
     
     func calculatePart2() throws -> String {
                 let day21InputFile = getFileFromProject(named: "Day21Input.txt")
-                let i = try IntFileIterator(contentsOf: day21InputFile, delimitedBy: ",")
-                let code = i.array()
-                let machine = IntCodeMachine(withCode: code)
+                let machine = try IntCodeMachine(fromURL: day21InputFile)
                 machine.addInput(values:
                     // Check if 4 spaces away is solid, jump if any holes exist between
                     Array<Character>("""

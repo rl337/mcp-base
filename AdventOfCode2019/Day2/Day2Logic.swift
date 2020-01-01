@@ -12,12 +12,10 @@ class DayTwoSolution : DayOfCodeSolution {
     
     func computeWithNounAndVerb(noun: Int, verb: Int) throws -> Int {
         let day2InputFile = getFileFromProject(named: "Day2Input.txt")
-        let i = try IntFileIterator(contentsOf: day2InputFile, delimitedBy: ",")
-        var code = i.array();
-        code[1] = noun
-        code[2] = verb
         
-        let machine = IntCodeMachine(withCode: code)
+        let machine = try IntCodeMachine(fromURL: day2InputFile)
+        try machine.poke(value: noun, atIndex: 1)
+        try machine.poke(value: verb, atIndex: 2)
         try machine.run()
         let state = machine.array()
         

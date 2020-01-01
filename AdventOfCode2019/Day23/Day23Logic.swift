@@ -12,11 +12,9 @@ class DayTwentyThreeSolution : DayOfCodeSolution {
     
     func calculatePart1() throws -> Int {
         let day23InputFile = getFileFromProject(named: "Day23Input.txt")
-        let i = try IntFileIterator(contentsOf: day23InputFile, delimitedBy: ",")
-        let code = i.array();
         var network: [IntCodeMachine] = []
         for address in 0..<50 {
-            network.append(IntCodeMachine(withCode: code))
+            network.append(try IntCodeMachine(fromURL: day23InputFile))
             network[address].addInput(value: address)
         }
         

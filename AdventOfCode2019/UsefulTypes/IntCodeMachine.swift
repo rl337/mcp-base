@@ -115,6 +115,16 @@ class IntCodeMachine {
         }
     }
     
+    convenience init(fromURL url: URL, withInput input: [Int] = []) throws {
+        let i = try IntFileIterator(contentsOf: url, delimitedBy: ",")
+        let code = i.array();
+        self.init(withCode: code, withInput: input)
+    }
+    
+    func poke(value: Int, atIndex index: Int) throws {
+        try self.code.set(index, value: value)
+    }
+    
     func clone() -> IntCodeMachine {
         let result = IntCodeMachine(withCode: [])
         result.code = self.code.clone()

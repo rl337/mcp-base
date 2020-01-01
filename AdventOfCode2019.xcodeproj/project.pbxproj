@@ -312,6 +312,7 @@
 		6241D0A823AA9ABD0043ECD0 /* UsefulTypes */ = {
 			isa = PBXGroup;
 			children = (
+				629C1A5F2394E10200920687 /* IntCodeMachine.swift */,
 			);
 			path = UsefulTypes;
 			sourceTree = "<group>";
@@ -500,7 +501,6 @@
 			children = (
 				629C1A5B2394E00200920687 /* Day2Input.txt */,
 				629C1A5D2394E02700920687 /* Day2Logic.swift */,
-				629C1A5F2394E10200920687 /* IntCodeMachine.swift */,
 			);
 			path = Day2;
 			sourceTree = "<group>";
