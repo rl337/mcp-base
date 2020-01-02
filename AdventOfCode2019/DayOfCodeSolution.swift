@@ -171,7 +171,7 @@ public class DayOfCodeSolution {
         if self.part1Solution != nil {
             headings.append(
                 self.getEntryForConfirmedAnswer(
-                    -1,
+                    Int.max,
                     value: self.part1Solution!,
                     labeledWith: "Part 1 Solution"
                 )
@@ -181,7 +181,7 @@ public class DayOfCodeSolution {
         if self.part2Solution != nil {
             headings.append(
                 self.getEntryForConfirmedAnswer(
-                    -2,
+                    Int.max - 1,
                     value: self.part2Solution!,
                     labeledWith: "Part 2 Solution"
                 )

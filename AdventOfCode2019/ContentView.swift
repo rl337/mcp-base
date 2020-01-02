@@ -62,8 +62,9 @@ struct SolutionNavigationBar: View {
             if solutions.hasPrev() {
                 Button(action: {
                     solutions.selectPrev()
-                    self.parent.solutionContent = solutions.execute()
-                    self.parent.headerContent = solutions.heading()
+                    let solutions = SolutionController.getInstance()
+                    let solution = solutions.solutions[solutions.current]
+                    self.parent.solutionContent = solution.fullHeading()
                 }) {
                     Text("⬅️")
                 }
@@ -71,11 +72,24 @@ struct SolutionNavigationBar: View {
                 Text("⏹")
             }
             
+            Button(action: {
+                self.parent.solutionContent = []
+                DispatchQueue.global(qos: .utility).async {
+                    let solutions = SolutionController.getInstance()
+                    let solution = solutions.solutions[solutions.current]
+                    self.parent.solutionContent = solution.fullHeading()
+                    self.parent.solutionContent.append(contentsOf: solution.execute())
+                    }
+                }) {
+                Text("⏩")
+            }
+            
             if solutions.hasNext() {
                 Button(action: {
                     solutions.selectNext()
-                    self.parent.solutionContent = solutions.execute()
-                    self.parent.headerContent = solutions.heading()
+                    let solutions = SolutionController.getInstance()
+                    let solution = solutions.solutions[solutions.current]
+                    self.parent.solutionContent = solution.fullHeading()
                 }) {
                     Text("➡️")
                 }
@@ -113,18 +127,21 @@ struct UIEntryList: View {
     }
 }
 
+struct SolutionContentView: View {
+    var parent: ContentView
+
+    var body: some View {
+        UIEntryList(entries: parent.solutionContent)
+    }
+}
+
 struct ContentView: View {
-    @State var solutionContent: [UIEntry] =
-        SolutionController.getInstance().execute()
-    @State var headerContent: [UIEntry] =
-        SolutionController.getInstance().heading()
+    @State var solutionContent: [UIEntry] = SolutionController.getInstance().heading()
 
     var body: some View {
         VStack {
             SolutionNavigationBar(parent: self)
-            UIEntryList(entries: headerContent).frame(height: 100)
-            Spacer()
-            UIEntryList(entries: solutionContent)
+            SolutionContentView(parent: self)
         }
     }
 }
