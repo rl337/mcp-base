@@ -15,14 +15,16 @@ public struct UIEntry {
     public var isError: Bool
     public var isMonospaced: Bool
     public var size: Float
+    public var isHeader: Bool
 
-    init(withId id: Int, thatDisplays message: String, labeledWith label: String? = nil, isError: Bool = false, isMonospaced: Bool = false, size: Float=16.0) {
+    init(withId id: Int, thatDisplays message: String, labeledWith label: String? = nil, isError: Bool = false, isMonospaced: Bool = false, size: Float=16.0, isHeader: Bool = false) {
         self.id = id
         self.message = message
         self.label = label
         self.isError = isError
         self.isMonospaced = isMonospaced
         self.size = size
+        self.isHeader = isHeader
     }
 }
 
@@ -186,6 +188,10 @@ public class DayOfCodeSolution {
                     labeledWith: "Part 2 Solution"
                 )
             )
+        }
+        
+        for i in 0..<headings.count {
+            headings[i].isHeader = true
         }
         
         return headings

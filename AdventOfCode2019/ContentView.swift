@@ -14,7 +14,7 @@ struct OutputText: View {
     var entry: UIEntry
     
     var body: some View {
-        Text(entry.message).font(.system(size: CGFloat(entry.size), design: entry.isMonospaced ? .monospaced : .default))
+        Text(entry.message).font(.system(size: CGFloat(entry.size), design: entry.isMonospaced ? .monospaced : .default)).fontWeight(entry.isHeader ? .heavy : .regular)
     }
 }
 
@@ -23,7 +23,7 @@ struct LabeledText: View {
     
     var body: some View {
         HStack{
-            Text(entry.label!).bold()
+            Text(entry.label!).fontWeight(entry.isHeader ? .heavy : .bold)
             OutputText(entry: entry)
         }
     }
@@ -36,7 +36,7 @@ struct ErrorLabeledText: View {
     var body: some View {
         HStack{
             Text("💣")
-            Text(entry.label!).bold()
+            Text(entry.label!).fontWeight(entry.isHeader ? .heavy : .bold)
             OutputText(entry: entry)
         }
     }
