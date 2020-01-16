@@ -12,6 +12,10 @@ class BinaryHeap<T> {
     var storage: [T]
     var compare: (_ a: T, _ b: T) -> Bool
     
+    var count: Int {
+        get { storage.count }
+    }
+    
     init(withReserveCapacity capacity: Int = 1000, _ comparator: @escaping (_ a: T, _ b: T) -> Bool) {
         storage = Array()
         storage.reserveCapacity(capacity)
