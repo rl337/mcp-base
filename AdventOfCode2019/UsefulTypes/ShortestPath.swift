@@ -8,15 +8,7 @@
 
 import Foundation
 
-protocol HashableComparable: Hashable, Comparable {
-    
-}
-
-extension String : HashableComparable {
-    
-}
-
-class PathComponent<T: HashableComparable> {
+class PathComponent<T: Comparable> {
     var weight: Int
     var value: T
     
@@ -26,7 +18,7 @@ class PathComponent<T: HashableComparable> {
     }
 }
 
-class Path<T: HashableComparable> {
+class Path<T: Comparable> {
     var components: [PathComponent<T>]
     
     init() {
@@ -65,7 +57,7 @@ class Path<T: HashableComparable> {
 }
 
 protocol PathProvider {
-    associatedtype ComponentType: HashableComparable
+    associatedtype ComponentType: Comparable
     func listCandidates(forPath path: Path<ComponentType>) -> [Path<ComponentType>]
 }
 

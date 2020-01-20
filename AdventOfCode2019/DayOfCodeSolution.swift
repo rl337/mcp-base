@@ -54,6 +54,24 @@ public struct BitmapPoint: Hashable {
     }
 }
 
+extension BitmapPoint: Comparable {
+    public static func < (lhs: BitmapPoint, rhs: BitmapPoint) -> Bool {
+        if lhs.y < rhs.y {
+            return true
+        }
+        
+        if lhs.y > rhs.y {
+            return false
+        }
+        
+        if lhs.x < rhs.x {
+            return true
+        }
+        
+        return false
+    }
+}
+
 public struct SparseBitmap {
     var points: [BitmapPoint: Int]
     
@@ -364,6 +382,7 @@ public class SolutionController {
                     DayTwentyThreeSolution(part1: 23626, part2: 19019),
                     DayTwentyFourSolution(part1: 32776479, part2: nil),
                     DayTwentyFiveSolution(part1: 1090617344, part2: nil),
+                    DayEighteenSolution(part1: 5406, part2: nil),
                 ]
             )
             return instance!

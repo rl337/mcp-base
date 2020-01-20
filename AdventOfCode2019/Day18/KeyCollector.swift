@@ -14,37 +14,12 @@ struct PathCacheKey : Hashable {
 }
 
 public class KeyCollector {
-    var shortestPathCache: [PathCacheKey: [BitmapPoint]]
-    let finder: SlimeMoldShortestPath
+    let finder: KeyMap
     let blockedKeys: [Int: [Int]]
     
     init(rawMap: String) throws {
-        finder = try SlimeMoldShortestPath(rawMap, ["#".asCharacterInt(), ".".asCharacterInt()])
-        shortestPathCache = [:]
+        finder = try KeyMap(rawMap, [".".asCharacterInt()], ["#".asCharacterInt()])
         blockedKeys = [:]
-    }
-
-    func shortestPath(a: BitmapPoint, b: BitmapPoint, keys: [Int], allKeys: [Int]) throws -> [BitmapPoint]? {
-        let pathKey = PathCacheKey(a: a, b: b)
-        var cachedPath = shortestPathCache[pathKey]
-        if cachedPath == nil {
-            cachedPath = finder.shortestPath(a, b, walls: ["#".asCharacterInt()])
-            shortestPathCache[pathKey] = cachedPath
-        }
-        
-        guard let path = cachedPath else {
-            return nil
-        }
-                    
-        let remainingKeys = allKeys.filter { !keys.contains($0) }
-        let remainingDoors = remainingKeys.map { doorForKey(key: $0) }
-        
-        let blockingDoors = finder.items.filter{ remainingDoors.contains($0.key) && path.contains($0.value) }
-        if blockingDoors.count > 0 {
-            return nil
-        }
-        
-        return path
     }
 
     func doorForKey(key: Int) -> Int {
@@ -52,68 +27,74 @@ public class KeyCollector {
         return "A".asCharacterInt() + keyOffset
     }
     
-    func collectAllKeys() throws -> (distance: Int, order: [Int])? {
+    func collectAllKeys() throws -> (distance: Int, order: [Int]) {
         let allKeys = finder.items.filter {
             $0.key >= "a".asCharacterInt() &&
             $0.key <= "z".asCharacterInt()
         }
-        let allKeyKeys = Array<Int>(allKeys.keys)
-        
-        var orders: [(distance: Int, order: [Int], location: BitmapPoint)] = []
-        guard let location = finder.items["@".asCharacterInt()] else {
-            throw KeyCollectorError.NoInitialStartLocation
+        let keyPaths = finder.getItemDistanceMap()
+
+        let neededKeys = finder.items.filter {
+            $0.key >= "A".asCharacterInt() &&
+            $0.key <= "Z".asCharacterInt()
+        }.map { door in
+            Dictionary.Element(String(door.key.asCharacter()).lowercased().asCharacterInt(), door.value)
         }
-        
-        for thisKey in allKeys {
-            guard let pathToKey = try shortestPath(a: location, b: thisKey.value, keys: [thisKey.key], allKeys: allKeyKeys) else {
+        var neededKeysForPath: [ItemPair: [Int]] = [:]
+        for item in keyPaths {
+            guard let pathToKey = keyPaths[item.key] else {
                 continue
             }
-            orders.append((distance: pathToKey.count - 1, order: [thisKey.key], location: thisKey.value))
+            let needsKeys = neededKeys.filter { pathToKey.contains($0.value)}
+            neededKeysForPath[item.key] = needsKeys.map({ $0.key })
         }
         
-        var shortestOrder: [Int]?
-        var shortestDistance: Int?
+        let orders: BinaryHeap<(distance: Int, order: [Int], location: BitmapPoint)> = BinaryHeap { a, b in a.distance > b.distance
+        }
+        
+        let startingItem = "@".asCharacterInt()
+        let startingPoint = finder.items[startingItem]!
+        var states: [[Int]: Int] = [:]
+        try orders.enqueue((distance: 0, order: [startingItem], location: startingPoint))
         
         while orders.count > 0 {
-            var newPathsFound = 0
-            let path = orders.removeFirst()
+            let path = try orders.dequeue()
             let remainingKeys = allKeys.filter { !path.order.contains($0.key) }
             
             if remainingKeys.count < 1 { // This path has all of the keys
                 return (distance: path.distance, order: path.order)
-//                if shortestDistance == nil {
-//                    shortestDistance = path.distance
-//                    shortestOrder = path.order
-//                } else {
-//                    if path.distance < shortestDistance! {
-//                        shortestDistance = path.distance
-//                        shortestOrder = path.order
-//                    }
-//                }
-//                continue
             }
             
             for thisKey in remainingKeys {
-                var haveKeys = path.order
-                haveKeys.append(thisKey.key)
-                guard let pathToKey = try shortestPath(a: path.location, b: thisKey.value, keys: haveKeys, allKeys: allKeyKeys) else {
+                let keypair = [thisKey.key, path.order.last!].sorted()
+                let itemPair = ItemPair(a:keypair[0], b: keypair[1])
+                guard let pathToKey = keyPaths[itemPair] else {
                     continue
                 }
-                newPathsFound += 1
+                
+                // needsKeys are any keys necessary to traverse path
+                let haveKeys = path.order
+                let needsKeys = neededKeysForPath[itemPair]!
+                let unmetKeys = needsKeys.filter { thisKey in !haveKeys.contains(thisKey) }
+                if unmetKeys.count > 0 {
+                    // We couldn't pass because we don't yet have the key
+                    continue
+                }
+                
                 var newOrder = path.order
                 newOrder.append(thisKey.key)
-                orders.append((distance: path.distance + pathToKey.count - 1, order: newOrder, location: thisKey.value))
-            }
-            
-            if newPathsFound < 1 {
-                throw KeyCollectorError.NoValidPathToRemainingKeys
-            }
-        }
+                let candidate = (distance: path.distance + pathToKey.path.count, order: newOrder, location: thisKey.value)
 
-        if shortestDistance == nil {
-            return nil
+                let state = candidate.order.sorted() + [ candidate.order.last! ]
+                let prevStateDistance = states[state]
+                if prevStateDistance == nil || prevStateDistance! > candidate.distance {
+                    states[state] = candidate.distance
+                    try orders.enqueue(candidate)
+                }
+            }
         }
-        return (shortestDistance!, shortestOrder!)
+        
+        throw KeyCollectorError.NoValidPathToRemainingKeys
     }
     
     enum KeyCollectorError : Error {

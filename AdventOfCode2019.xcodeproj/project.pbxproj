@@ -28,7 +28,6 @@
 		6241D09C23A8A1270043ECD0 /* VacuumRobotMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D09B23A8A1270043ECD0 /* VacuumRobotMapper.swift */; };
 		6241D09E23A8A84B0043ECD0 /* Day17Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D09D23A8A84B0043ECD0 /* Day17Logic.swift */; };
 		6241D0A123A9ED780043ECD0 /* Day18Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6241D0A023A9ED780043ECD0 /* Day18Input.txt */; };
-		6241D0A323A9EDD00043ECD0 /* SlimeMoldShortestPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A223A9EDD00043ECD0 /* SlimeMoldShortestPath.swift */; };
 		6241D0A523A9EF490043ECD0 /* UsefulExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A423A9EF490043ECD0 /* UsefulExtensions.swift */; };
 		6241D0A723A9F3890043ECD0 /* Day18Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A623A9F3890043ECD0 /* Day18Tests.swift */; };
 		6241D0AA23AB52190043ECD0 /* KeyCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241D0A923AB52190043ECD0 /* KeyCollector.swift */; };
@@ -93,6 +92,8 @@
 		62DDB80323CC45C5000C446C /* BinaryHeapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DDB80223CC45C5000C446C /* BinaryHeapTests.swift */; };
 		62DDB80523CD851B000C446C /* ShortestPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DDB80423CD851B000C446C /* ShortestPath.swift */; };
 		62DDB80723CD97FF000C446C /* ShortestPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DDB80623CD97FF000C446C /* ShortestPathTests.swift */; };
+		62DDB80923D2CA71000C446C /* KeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DDB80823D2CA71000C446C /* KeyMap.swift */; };
+		62DDB80B23D647F7000C446C /* Day18Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DDB80A23D647F7000C446C /* Day18Logic.swift */; };
 		62E2A49123B2FEA300B81C67 /* Day24Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A49023B2FEA300B81C67 /* Day24Logic.swift */; };
 		62E2A49423B307DC00B81C67 /* Day13Input.txt in Resources */ = {isa = PBXBuildFile; fileRef = 62E2A49323B307DC00B81C67 /* Day13Input.txt */; };
 		62E2A49623B3081500B81C67 /* Day13Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A49523B3081500B81C67 /* Day13Logic.swift */; };
@@ -142,7 +143,6 @@
 		6241D09B23A8A1270043ECD0 /* VacuumRobotMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacuumRobotMapper.swift; sourceTree = "<group>"; };
 		6241D09D23A8A84B0043ECD0 /* Day17Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day17Logic.swift; sourceTree = "<group>"; };
 		6241D0A023A9ED780043ECD0 /* Day18Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day18Input.txt; sourceTree = "<group>"; };
-		6241D0A223A9EDD00043ECD0 /* SlimeMoldShortestPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimeMoldShortestPath.swift; sourceTree = "<group>"; };
 		6241D0A423A9EF490043ECD0 /* UsefulExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulExtensions.swift; sourceTree = "<group>"; };
 		6241D0A623A9F3890043ECD0 /* Day18Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day18Tests.swift; sourceTree = "<group>"; };
 		6241D0A923AB52190043ECD0 /* KeyCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCollector.swift; sourceTree = "<group>"; };
@@ -213,6 +213,8 @@
 		62DDB80223CC45C5000C446C /* BinaryHeapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryHeapTests.swift; sourceTree = "<group>"; };
 		62DDB80423CD851B000C446C /* ShortestPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortestPath.swift; sourceTree = "<group>"; };
 		62DDB80623CD97FF000C446C /* ShortestPathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortestPathTests.swift; sourceTree = "<group>"; };
+		62DDB80823D2CA71000C446C /* KeyMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMap.swift; sourceTree = "<group>"; };
+		62DDB80A23D647F7000C446C /* Day18Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day18Logic.swift; sourceTree = "<group>"; };
 		62E2A49023B2FEA300B81C67 /* Day24Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day24Logic.swift; sourceTree = "<group>"; };
 		62E2A49323B307DC00B81C67 /* Day13Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day13Input.txt; sourceTree = "<group>"; };
 		62E2A49523B3081500B81C67 /* Day13Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day13Logic.swift; sourceTree = "<group>"; };
@@ -311,8 +313,9 @@
 			isa = PBXGroup;
 			children = (
 				6241D0A023A9ED780043ECD0 /* Day18Input.txt */,
-				6241D0A223A9EDD00043ECD0 /* SlimeMoldShortestPath.swift */,
 				6241D0A923AB52190043ECD0 /* KeyCollector.swift */,
+				62DDB80823D2CA71000C446C /* KeyMap.swift */,
+				62DDB80A23D647F7000C446C /* Day18Logic.swift */,
 			);
 			path = Day18;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				6241D0B123AC84870043ECD0 /* Day19Logic.swift in Sources */,
 				62CC9C3023B1E5C500E74EC3 /* BugGrid.swift in Sources */,
 				6241D0CA23B048BB0043ECD0 /* Day22Logic.swift in Sources */,
+				62DDB80B23D647F7000C446C /* Day18Logic.swift in Sources */,
 				62DDB80523CD851B000C446C /* ShortestPath.swift in Sources */,
 				629C1A1F23938F5600920687 /* AppDelegate.swift in Sources */,
 				62633AD723A2A0E3002E0815 /* ByteRadix.swift in Sources */,
@@ -777,7 +781,6 @@
 				624B9A44239F7F500012F095 /* Day10Logic.swift in Sources */,
 				6234DC0E23B0964C000F4944 /* Day23Logic.swift in Sources */,
 				629C1A5E2394E02700920687 /* Day2Logic.swift in Sources */,
-				6241D0A323A9EDD00043ECD0 /* SlimeMoldShortestPath.swift in Sources */,
 				624B9A4923A0BBC00012F095 /* PanelGrid.swift in Sources */,
 				624B9A4B23A0C8050012F095 /* Day11Logic.swift in Sources */,
 				629C1A6523962B4200920687 /* Day3Logic.swift in Sources */,
@@ -793,6 +796,7 @@
 				6241D08E23A610BA0043ECD0 /* RepairBotMapper.swift in Sources */,
 				62B4D91523A20F5F00E00400 /* Day12Logic.swift in Sources */,
 				62C83622239CCB1D00609DF8 /* spaceimageformat.swift in Sources */,
+				62DDB80923D2CA71000C446C /* KeyMap.swift in Sources */,
 				624B9A40239F61E70012F095 /* AsteroidField.swift in Sources */,
 				629C1A2323938F5600920687 /* ContentView.swift in Sources */,
 				6241D09E23A8A84B0043ECD0 /* Day17Logic.swift in Sources */,
