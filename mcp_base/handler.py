@@ -70,12 +70,15 @@ class IMcpToolHandler(ABC):
     @abstractmethod
     async def handle(
         self,
-        arguments: dict[str, Any]
+        arguments: dict[str, Any],
+        **kwargs
     ) -> list[TextContent]:
         """Handle tool execution.
         
         Args:
             arguments: Tool arguments from MCP request
+            **kwargs: Additional context (e.g., db_session, service_factory)
+                     These are injected by the framework based on handler dependencies
             
         Returns:
             List of TextContent responses

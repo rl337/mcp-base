@@ -9,18 +9,39 @@ A dependency-injected, reflection-based framework for building MCP (Model Contex
 - **Dependency Injection**: Full pyiv DI support for handlers
 - **Singleton Handlers**: Per-injector singleton handlers for performance
 - **Type-Safe**: Full type hints and Pydantic validation
+- **Request Validation**: Utilities for Pydantic model validation
+- **Exception Mapping**: Convert service exceptions to MCP errors
+- **Serialization Helpers**: Base utilities for model serialization
+- **Schema Generation**: Generate JSON schemas from Pydantic models
 
 ## Quick Start
 
-### 1. Define Handler Interface
+### 1. Define Request Model (Optional but Recommended)
 
 ```python
-from mcp_base import IMcpToolHandler
+from pydantic import BaseModel, Field
+from mcp_base import get_schema_from_model
+
+class CreateFactRequest(BaseModel):
+    """Request model for creating a fact."""
+    subject: str = Field(..., description="Entity identifier")
+    predicate: str = Field(..., description="Relationship type")
+    object: str = Field(..., description="Target entity or value")
+```
+
+### 2. Define Handler
+
+```python
+from mcp_base import IMcpToolHandler, validate_request, serialize_model
 from mcp.types import TextContent
 from typing import Any
+import json
 
 class CreateFactHandler(IMcpToolHandler):
     """Handler for create_fact tool."""
+    
+    def __init__(self, fact_service: FactService):
+        self.fact_service = fact_service
     
     @property
     def tool_name(self) -> str:
@@ -31,23 +52,28 @@ class CreateFactHandler(IMcpToolHandler):
         return {
             "name": "create_fact",
             "description": "Create a new fact",
-            "inputSchema": {
-                "type": "object",
-                "properties": {
-                    "subject": {"type": "string"},
-                    "predicate": {"type": "string"},
-                    "object": {"type": "string"},
-                },
-                "required": ["subject", "predicate", "object"]
-            }
+            "inputSchema": get_schema_from_model(CreateFactRequest)
         }
     
     async def handle(
         self,
-        arguments: dict[str, Any]
+        arguments: dict[str, Any],
+        db_session: Any  # Injected by framework
     ) -> list[TextContent]:
-        # Handler implementation
-        return [TextContent(type="text", text="Success")]
+        # Validate request
+        request = validate_request(CreateFactRequest, arguments)
+        
+        # Execute logic
+        fact = self.fact_service.create_fact(
+            subject=request.subject,
+            predicate=request.predicate,
+            object=request.object,
+            session=db_session
+        )
+        
+        # Serialize and return
+        result = serialize_model(fact)
+        return [TextContent(type="text", text=json.dumps(result, indent=2))]
 ```
 
 ### 2. Configure DI
