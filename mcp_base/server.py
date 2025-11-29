@@ -155,73 +155,139 @@ class McpServerBase:
         
         # List all tools
         @router.get("")
-        async def list_tools():
+        async def list_tools(request: Request):
             """List all available MCP tools."""
-            tools = []
-            for tool_name, handler_class in self._handlers.items():
-                schema = self._get_tool_schema(handler_class, tool_name)
-                tools.append(schema)
-            return {"tools": tools}
+            start_time = time.time()
+            status_code = 200
+            error_type = None
+            
+            try:
+                tools = []
+                for tool_name, handler_class in self._handlers.items():
+                    schema = self._get_tool_schema(handler_class, tool_name)
+                    tools.append(schema)
+                return {"tools": tools}
+            except Exception as e:
+                status_code = 500
+                error_type = "exception"
+                raise
+            finally:
+                if self.enable_observability:
+                    duration = time.time() - start_time
+                    record_http_request("GET", "/", status_code, duration, error_type)
         
         # Get tool schema
         @router.get("/{tool_name}/schema")
-        async def get_tool_schema(tool_name: str):
+        async def get_tool_schema(tool_name: str, request: Request):
             """Get schema for a specific tool."""
-            if tool_name not in self._handlers:
-                raise HTTPException(404, f"Tool '{tool_name}' not found")
+            start_time = time.time()
+            status_code = 200
+            error_type = None
             
-            handler_class = self._handlers[tool_name]
-            schema = self._get_tool_schema(handler_class, tool_name)
-            return schema
+            try:
+                if tool_name not in self._handlers:
+                    status_code = 404
+                    error_type = "not_found"
+                    raise HTTPException(404, f"Tool '{tool_name}' not found")
+                
+                handler_class = self._handlers[tool_name]
+                schema = self._get_tool_schema(handler_class, tool_name)
+                return schema
+            except HTTPException:
+                raise
+            except Exception as e:
+                status_code = 500
+                error_type = "exception"
+                raise
+            finally:
+                if self.enable_observability:
+                    duration = time.time() - start_time
+                    record_http_request("GET", f"/{tool_name}/schema", status_code, duration, error_type)
         
         # Execute tool (SSE endpoint)
         @router.post("/{tool_name}/sse")
         async def execute_tool_sse(tool_name: str, request: Request):
             """Execute tool and return SSE stream."""
-            body = await request.json()
-            arguments = body.get("arguments", {})
+            start_time = time.time()
+            status_code = 200
+            error_type = None
             
-            async def generate():
-                try:
-                    results = await self._execute_tool(tool_name, arguments)
-                    for result in results:
-                        yield f"data: {json.dumps(result)}\n\n"
-                    yield "data: [DONE]\n\n"
-                except Exception as e:
-                    error_msg = {"error": str(e)}
-                    yield f"data: {json.dumps(error_msg)}\n\n"
-            
-            return StreamingResponse(generate(), media_type="text/event-stream")
+            try:
+                body = await request.json()
+                arguments = body.get("arguments", {})
+                
+                async def generate():
+                    try:
+                        results = await self._execute_tool(tool_name, arguments)
+                        for result in results:
+                            yield f"data: {json.dumps(result)}\n\n"
+                        yield "data: [DONE]\n\n"
+                    except Exception as e:
+                        error_msg = {"error": str(e)}
+                        yield f"data: {json.dumps(error_msg)}\n\n"
+                
+                return StreamingResponse(generate(), media_type="text/event-stream")
+            except HTTPException as e:
+                status_code = e.status_code
+                error_type = "http_error"
+                raise
+            except Exception as e:
+                status_code = 500
+                error_type = "exception"
+                raise
+            finally:
+                if self.enable_observability:
+                    duration = time.time() - start_time
+                    record_http_request("POST", f"/{tool_name}/sse", status_code, duration, error_type)
         
         # Execute tool (JSON-RPC endpoint)
         @router.post("/{tool_name}/jsonrpc")
         async def execute_tool_jsonrpc(tool_name: str, request: Request):
             """Execute tool via JSON-RPC 2.0."""
-            body = await request.json()
-            
-            # Validate JSON-RPC request
-            if "method" in body and body["method"] != tool_name:
-                raise HTTPException(400, "Method name mismatch")
-            
-            arguments = body.get("params", {})
-            request_id = body.get("id")
+            start_time = time.time()
+            status_code = 200
+            error_type = None
             
             try:
-                result = await self._execute_tool(tool_name, arguments)
-                return {
-                    "jsonrpc": "2.0",
-                    "id": request_id,
-                    "result": result
-                }
-            except Exception as e:
-                return {
-                    "jsonrpc": "2.0",
-                    "id": request_id,
-                    "error": {
-                        "code": -32603,
-                        "message": str(e)
+                body = await request.json()
+                
+                # Validate JSON-RPC request
+                if "method" in body and body["method"] != tool_name:
+                    status_code = 400
+                    error_type = "validation_error"
+                    raise HTTPException(400, "Method name mismatch")
+                
+                arguments = body.get("params", {})
+                request_id = body.get("id")
+                
+                try:
+                    result = await self._execute_tool(tool_name, arguments)
+                    return {
+                        "jsonrpc": "2.0",
+                        "id": request_id,
+                        "result": result
                     }
-                }
+                except Exception as e:
+                    status_code = 500
+                    error_type = "tool_error"
+                    return {
+                        "jsonrpc": "2.0",
+                        "id": request_id,
+                        "error": {
+                            "code": -32603,
+                            "message": str(e)
+                        }
+                    }
+            except HTTPException:
+                raise
+            except Exception as e:
+                status_code = 500
+                error_type = "exception"
+                raise
+            finally:
+                if self.enable_observability:
+                    duration = time.time() - start_time
+                    record_http_request("POST", f"/{tool_name}/jsonrpc", status_code, duration, error_type)
         
         # Simple POST endpoint (non-streaming)
         @router.post("/{tool_name}")
