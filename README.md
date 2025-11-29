@@ -163,6 +163,80 @@ Or with Poetry:
 poetry add mcp-base
 ```
 
+## Observability
+
+The framework includes comprehensive observability with Prometheus metrics and OpenTelemetry tracing.
+
+### Metrics
+
+Automatic metrics collection for:
+- Tool execution count, duration, success/error rates
+- Error types and reasons
+- HTTP request metrics
+- Active request counts
+
+Metrics are exposed at `/v1/mcp/tools/metrics` for Prometheus scraping.
+
+### Tracing
+
+Automatic distributed tracing with:
+- Span creation for each tool execution
+- Span attributes (tool_name, arguments)
+- Error status tracking
+- Deep propagation support
+
+### Testing Observability
+
+Use test collectors to assert metrics and spans in tests:
+
+```python
+from mcp_base import TestMetricsCollector, TestTracingCollector
+from mcp_base import McpServerBase
+
+# Create test collectors
+metrics = TestMetricsCollector()
+tracing = TestTracingCollector()
+
+# Initialize server with test collectors
+mcp_server = McpServerBase(
+    app=app,
+    tool_package="my_service.handlers",
+    interface=IMcpToolHandler,
+    injector=injector,
+    metrics_collector=metrics,
+    tracing_collector=tracing
+)
+
+# Execute tool
+response = client.post("/v1/mcp/tools/echo", json={"arguments": {"message": "hello"}})
+
+# Assert metrics
+assert metrics.get_tool_execution_count("echo") == 1
+assert metrics.get_success_count("echo") == 1
+assert metrics.get_average_duration("echo") > 0
+
+# Assert tracing
+spans = tracing.get_spans_by_name("mcp.tool.echo")
+assert len(spans) == 1
+assert spans[0].attributes["tool_name"] == "echo"
+assert spans[0].status == "OK"
+```
+
+### Type Hints for Tracing
+
+Handlers should use `trace_span` from `mcp_base.tracing`:
+
+```python
+from mcp_base.tracing import trace_span
+
+async def handle(self, arguments: dict[str, Any], **kwargs) -> list[TextContent]:
+    with trace_span(f"mcp.tool.{self.tool_name}", {"tool_name": self.tool_name}):
+        # Handler implementation
+        ...
+```
+
+The type hints in `IMcpToolHandler.handle()` guide agents to implement tracing spans.
+
 ## License
 
 MIT License
