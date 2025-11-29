@@ -6,13 +6,13 @@ from fastapi.testclient import TestClient
 from typing import Any
 
 from pyiv import Config, get_injector, SingletonType
-from mcp_base import McpServerBase, IMcpToolHandler, TextContent
+from mcp_base import McpServerBase, McpToolHandler, TextContent
 from mcp_base.test_observability import TestMetricsCollector, TestTracingCollector
 from mcp_base.metrics import set_metrics_collector
 from mcp_base.tracing import set_tracing_collector
 
 
-class EchoHandler(IMcpToolHandler):
+class EchoHandlerImpl(McpToolHandler):
     """Echo handler for testing."""
     
     @property
