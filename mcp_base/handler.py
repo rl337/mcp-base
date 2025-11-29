@@ -1,7 +1,7 @@
 """MCP tool handler interface."""
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Optional
 
 try:
     from mcp.types import TextContent
@@ -13,6 +13,14 @@ except ImportError:
         """Text content for MCP responses."""
         type: str
         text: str
+
+# Type hint for tracing - agents should use trace_span from mcp_base.tracing
+try:
+    from mcp_base.tracing import trace_span
+    _TRACING_AVAILABLE = True
+except ImportError:
+    _TRACING_AVAILABLE = False
+    trace_span = None
 
 
 class IMcpToolHandler(ABC):
@@ -74,6 +82,16 @@ class IMcpToolHandler(ABC):
         **kwargs
     ) -> list[TextContent]:
         """Handle tool execution.
+        
+        Handlers should use trace_span from mcp_base.tracing for distributed tracing:
+        
+        Example:
+            from mcp_base.tracing import trace_span
+            
+            async def handle(self, arguments: dict[str, Any], **kwargs) -> list[TextContent]:
+                with trace_span(f"mcp.tool.{self.tool_name}", {"tool_name": self.tool_name}):
+                    # Handler implementation
+                    ...
         
         Args:
             arguments: Tool arguments from MCP request

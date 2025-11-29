@@ -27,6 +27,11 @@ dependencies = [
     "uvicorn[standard]>=0.38.0",
     "pydantic>=2.12.4",
     "pyiv @ git+https://github.com/rl337/pyiv.git@main#egg=pyiv",  # Use main for now, will update to v0.2.0 when merged
+    "prometheus-client>=0.20.0",  # Prometheus metrics
+    "opentelemetry-api>=1.24.0",  # OpenTelemetry tracing
+    "opentelemetry-sdk>=1.24.0",
+    "opentelemetry-instrumentation-fastapi>=0.45b0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.24.0",
 ]
 
 [project.optional-dependencies]

@@ -1,7 +1,9 @@
 """Base MCP server with automatic handler discovery and routing."""
 
 import logging
+import time
 from typing import Type, Dict, Any, Optional
+from contextlib import nullcontext
 from fastapi import FastAPI, APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 import json
@@ -9,6 +11,8 @@ import json
 from pyiv import Injector, Config
 
 from mcp_base.handler import IMcpToolHandler, TextContent
+from mcp_base.metrics import record_http_request, get_metrics, get_metrics_content_type, get_metrics_collector
+from mcp_base.tracing import setup_tracing, instrument_fastapi, get_tracing_collector
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +48,10 @@ class McpServerBase:
         interface: Type[IMcpToolHandler],
         injector: Injector,
         base_path: str = "/v1/mcp/tools",
-        handler_registry: Optional[Dict[str, Type[IMcpToolHandler]]] = None
+        handler_registry: Optional[Dict[str, Type[IMcpToolHandler]]] = None,
+        metrics_collector: Optional[Any] = None,  # MetricsCollector
+        tracing_collector: Optional[Any] = None,  # TracingCollector
+        enable_observability: bool = True
     ):
         """Initialize MCP base server.
         
@@ -56,12 +63,24 @@ class McpServerBase:
             base_path: Base path for MCP routes
             handler_registry: Optional manual registry of handler classes by tool name.
                            If not provided, will attempt to discover from injector config.
+            metrics_collector: Optional metrics collector (for testing). If None, uses default.
+            tracing_collector: Optional tracing collector (for testing). If None, uses default.
+            enable_observability: Whether to enable observability (metrics and tracing)
         """
         self.app = app
         self.tool_package = tool_package
         self.interface = interface
         self.injector = injector
         self.base_path = base_path
+        self.enable_observability = enable_observability
+        
+        # Set up observability collectors
+        if metrics_collector:
+            from mcp_base.metrics import set_metrics_collector
+            set_metrics_collector(metrics_collector)
+        if tracing_collector:
+            from mcp_base.tracing import set_tracing_collector
+            set_tracing_collector(tracing_collector)
         
         # Build handler registry
         if handler_registry:
@@ -208,10 +227,38 @@ class McpServerBase:
         @router.post("/{tool_name}")
         async def execute_tool_simple(tool_name: str, request: Request):
             """Execute tool and return result directly."""
-            body = await request.json()
-            arguments = body.get("arguments", {})
-            result = await self._execute_tool(tool_name, arguments)
-            return {"result": result}
+            start_time = time.time()
+            status_code = 200
+            error_type = None
+            
+            try:
+                body = await request.json()
+                arguments = body.get("arguments", {})
+                result = await self._execute_tool(tool_name, arguments)
+                return {"result": result}
+            except HTTPException as e:
+                status_code = e.status_code
+                error_type = "http_error"
+                raise
+            except Exception as e:
+                status_code = 500
+                error_type = "exception"
+                raise
+            finally:
+                if self.enable_observability:
+                    duration = time.time() - start_time
+                    record_http_request("POST", f"/{tool_name}", status_code, duration, error_type)
+        
+        # Metrics endpoint
+        @router.get("/metrics")
+        async def metrics_endpoint():
+            """Prometheus metrics endpoint."""
+            from fastapi.responses import Response
+            if self.enable_observability:
+                metrics_data = get_metrics()
+                content_type = get_metrics_content_type()
+                return Response(content=metrics_data, media_type=content_type)
+            return Response(content=b"# Metrics disabled\n", media_type="text/plain")
         
         self.app.include_router(router)
     
@@ -220,7 +267,7 @@ class McpServerBase:
         tool_name: str,
         arguments: dict[str, Any]
     ) -> list[dict[str, Any]]:
-        """Execute a tool handler with dependency injection.
+        """Execute a tool handler with dependency injection and observability.
         
         Args:
             tool_name: Name of the tool to execute
@@ -237,31 +284,67 @@ class McpServerBase:
         
         handler_class = self._handlers[tool_name]
         
+        # Track metrics and tracing
+        from mcp_base.metrics import get_metrics_collector
+        from mcp_base.tracing import get_tracing_collector
+        
+        metrics = get_metrics_collector() if self.enable_observability else None
+        tracing = get_tracing_collector() if self.enable_observability else None
+        
+        # Create trace span for tool execution
+        span_context = tracing.trace_span(
+            f"mcp.tool.{tool_name}",
+            {"tool_name": tool_name, "arguments": str(arguments)[:200]}
+        ) if tracing else None
+        
+        # Track metrics
+        metrics_context = metrics.track_tool_execution(tool_name) if metrics else None
+        
         try:
-            # Inject handler instance
-            # If registered as SINGLETON, this will reuse the cached instance
-            handler_instance = self.injector.inject(handler_class)
-            
-            # Call handle method
-            text_contents = await handler_instance.handle(arguments)
-            
-            # Convert TextContent to dict for JSON serialization
-            results = []
-            for content in text_contents:
-                if isinstance(content, dict):
-                    results.append(content)
-                else:
-                    # Handle TextContent objects
-                    results.append({
-                        "type": getattr(content, "type", "text"),
-                        "text": getattr(content, "text", str(content))
-                    })
-            
-            return results
+            with (span_context if span_context else nullcontext()), \
+                 (metrics_context if metrics_context else nullcontext()):
+                
+                # Add span attributes
+                if tracing:
+                    tracing.add_span_attribute("mcp.tool.name", tool_name)
+                    tracing.add_span_attribute("mcp.tool.arguments_count", len(arguments))
+                
+                # Inject handler instance
+                # If registered as SINGLETON, this will reuse the cached instance
+                handler_instance = self.injector.inject(handler_class)
+                
+                # Call handle method
+                text_contents = await handler_instance.handle(arguments)
+                
+                # Convert TextContent to dict for JSON serialization
+                results = []
+                for content in text_contents:
+                    if isinstance(content, dict):
+                        results.append(content)
+                    else:
+                        # Handle TextContent objects
+                        results.append({
+                            "type": getattr(content, "type", "text"),
+                            "text": getattr(content, "text", str(content))
+                        })
+                
+                # Mark span as successful
+                if tracing:
+                    tracing.set_span_status("OK")
+                
+                return results
         except HTTPException:
+            if tracing:
+                tracing.set_span_status("ERROR", "HTTP error")
             raise
         except Exception as e:
             logger.exception(f"Error executing tool {tool_name}")
+            if tracing:
+                tracing.set_span_status("ERROR", str(e))
+                tracing.add_span_event("exception", {
+                    "exception_type": type(e).__name__,
+                    "exception_message": str(e)
+                })
             raise HTTPException(500, f"Tool execution failed: {str(e)}")
     
     def _get_tool_schema(
