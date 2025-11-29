@@ -285,27 +285,32 @@ class McpServerBase:
         handler_class = self._handlers[tool_name]
         
         # Track metrics and tracing
-        from mcp_base.metrics import get_metrics_collector
-        from mcp_base.tracing import get_tracing_collector
-        
-        metrics = get_metrics_collector() if self.enable_observability else None
-        tracing = get_tracing_collector() if self.enable_observability else None
-        
-        # Create trace span for tool execution
-        span_context = tracing.trace_span(
-            f"mcp.tool.{tool_name}",
-            {"tool_name": tool_name, "arguments": str(arguments)[:200]}
-        ) if tracing else None
-        
-        # Track metrics
-        metrics_context = metrics.track_tool_execution(tool_name) if metrics else None
+        if self.enable_observability:
+            from mcp_base.metrics import get_metrics_collector
+            from mcp_base.tracing import get_tracing_collector
+            
+            metrics = get_metrics_collector()
+            tracing = get_tracing_collector()
+            
+            # Create trace span for tool execution
+            span_context = tracing.trace_span(
+                f"mcp.tool.{tool_name}",
+                {"tool_name": tool_name, "arguments": str(arguments)[:200]}
+            )
+            
+            # Track metrics
+            metrics_context = metrics.track_tool_execution(tool_name)
+        else:
+            span_context = nullcontext()
+            metrics_context = nullcontext()
+            metrics = None
+            tracing = None
         
         try:
-            with (span_context if span_context else nullcontext()), \
-                 (metrics_context if metrics_context else nullcontext()):
+            with span_context, metrics_context:
                 
                 # Add span attributes
-                if tracing:
+                if self.enable_observability and tracing:
                     tracing.add_span_attribute("mcp.tool.name", tool_name)
                     tracing.add_span_attribute("mcp.tool.arguments_count", len(arguments))
                 
@@ -329,17 +334,17 @@ class McpServerBase:
                         })
                 
                 # Mark span as successful
-                if tracing:
+                if self.enable_observability and tracing:
                     tracing.set_span_status("OK")
                 
                 return results
         except HTTPException:
-            if tracing:
+            if self.enable_observability and tracing:
                 tracing.set_span_status("ERROR", "HTTP error")
             raise
         except Exception as e:
             logger.exception(f"Error executing tool {tool_name}")
-            if tracing:
+            if self.enable_observability and tracing:
                 tracing.set_span_status("ERROR", str(e))
                 tracing.add_span_event("exception", {
                     "exception_type": type(e).__name__,
