@@ -118,6 +118,39 @@ That's it! Routes are automatically created:
 - `POST /v1/mcp/tools/{tool_name}/sse` - Execute tool (SSE)
 - `POST /v1/mcp/tools/{tool_name}/jsonrpc` - Execute tool (JSON-RPC)
 
+## Advanced Usage
+
+### Exception Mapping
+
+```python
+from mcp_base import ExceptionMapper, McpErrorCode
+from my_service.exceptions import NotFoundError, ValidationError
+
+mapper = ExceptionMapper()
+mapper.register(NotFoundError, McpErrorCode.NOT_FOUND)
+mapper.register(ValidationError, McpErrorCode.INVALID_PARAMS)
+
+try:
+    # Service call
+except Exception as e:
+    raise mapper.to_mcp_error(e)
+```
+
+### Serialization
+
+```python
+from mcp_base import serialize_model
+
+# Serialize SQLAlchemy model
+fact_dict = serialize_model(fact)
+
+# Handles:
+# - Datetime objects (ISO format)
+# - UUID objects (string)
+# - Nested objects (recursive)
+# - Metadata fields (meta -> metadata)
+```
+
 ## Installation
 
 ```bash
