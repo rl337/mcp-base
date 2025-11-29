@@ -1,6 +1,6 @@
 """MCP Base Framework - Automatic handler discovery and routing for MCP services."""
 
-from mcp_base.handler import IMcpToolHandler
+from mcp_base.handler import McpToolHandler
 from mcp_base.server import McpServerBase
 from mcp_base.serializers import serialize_model, serialize_datetime, serialize_uuid
 from mcp_base.exceptions import (
@@ -44,7 +44,7 @@ except ImportError:
 
 __version__ = "0.1.0"
 __all__ = [
-    "IMcpToolHandler",
+    "McpToolHandler",
     "McpServerBase",
     "serialize_model",
     "serialize_datetime",

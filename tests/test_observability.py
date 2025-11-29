@@ -37,7 +37,7 @@ class EchoHandler(IMcpToolHandler):
         return [TextContent(type="text", text=f"Echo: {message}")]
 
 
-class FailingHandler(IMcpToolHandler):
+class FailingHandlerImpl(McpToolHandler):
     """Handler that always fails for testing."""
     
     @property
@@ -61,8 +61,8 @@ class TestConfig(Config):
     
     def configure(self):
         self.register(
-            IMcpToolHandler,
-            EchoHandler,
+            McpToolHandler,
+            EchoHandlerImpl,
             singleton_type=SingletonType.SINGLETON
         )
 
@@ -98,7 +98,7 @@ def app_with_observability(metrics_collector, tracing_collector):
     mcp_server = McpServerBase(
         app=app,
         tool_package="tests.test_observability",
-        interface=IMcpToolHandler,
+        interface=McpToolHandler,
         injector=injector,
         base_path="/v1/mcp/tools",
         metrics_collector=metrics_collector,
@@ -144,13 +144,13 @@ class TestMetrics:
         
         # Register failing handler
         from pyiv import Config, get_injector, SingletonType
-        from mcp_base import IMcpToolHandler
+        from mcp_base import McpToolHandler
         
         class FailingConfig(Config):
             def configure(self):
                 self.register(
-                    IMcpToolHandler,
-                    FailingHandler,
+                    McpToolHandler,
+                    FailingHandlerImpl,
                     singleton_type=SingletonType.SINGLETON
                 )
         
@@ -158,10 +158,10 @@ class TestMetrics:
         mcp_server = McpServerBase(
             app=app,
             tool_package="tests",
-            interface=IMcpToolHandler,
+            interface=McpToolHandler,
             injector=injector,
             base_path="/v1/mcp/tools/fail",
-            handler_registry={"fail": FailingHandler},
+            handler_registry={"fail": FailingHandlerImpl},
             metrics_collector=metrics_collector
         )
         
@@ -248,13 +248,13 @@ class TestTracing:
         
         # Register failing handler
         from pyiv import Config, get_injector, SingletonType
-        from mcp_base import IMcpToolHandler
+        from mcp_base import McpToolHandler
         
         class FailingConfig(Config):
             def configure(self):
                 self.register(
-                    IMcpToolHandler,
-                    FailingHandler,
+                    McpToolHandler,
+                    FailingHandlerImpl,
                     singleton_type=SingletonType.SINGLETON
                 )
         
@@ -262,10 +262,10 @@ class TestTracing:
         mcp_server = McpServerBase(
             app=app,
             tool_package="tests",
-            interface=IMcpToolHandler,
+            interface=McpToolHandler,
             injector=injector,
             base_path="/v1/mcp/tools/fail",
-            handler_registry={"fail": FailingHandler},
+            handler_registry={"fail": FailingHandlerImpl},
             tracing_collector=tracing_collector
         )
         
@@ -325,7 +325,7 @@ class TestObservabilityIntegration:
         mcp_server = McpServerBase(
             app=app,
             tool_package="tests",
-            interface=IMcpToolHandler,
+            interface=McpToolHandler,
             injector=injector,
             base_path="/v1/mcp/tools",
             enable_observability=False

@@ -23,7 +23,7 @@ except ImportError:
     trace_span = None
 
 
-class IMcpToolHandler(ABC):
+class McpToolHandler(ABC):
     """Interface for MCP tool handlers.
     
     Handlers must implement this interface to be discovered and used by
@@ -31,7 +31,7 @@ class IMcpToolHandler(ABC):
     per-injector singletons for performance.
     
     Example:
-        class CreateFactHandler(IMcpToolHandler):
+        class CreateFactHandlerImpl(McpToolHandler):
             @property
             def tool_name(self) -> str:
                 return "create_fact"
@@ -44,10 +44,7 @@ class IMcpToolHandler(ABC):
                     "inputSchema": {"type": "object"}
                 }
             
-            async def handle(
-                self,
-                arguments: dict[str, Any]
-            ) -> list[TextContent]:
+            async def handle(self, arguments: dict[str, Any], **kwargs) -> list[TextContent]:
                 # Implementation
                 return [TextContent(type="text", text="Success")]
     """
@@ -105,4 +102,89 @@ class IMcpToolHandler(ABC):
             Exception: Any exception will be converted to an MCP error
         """
         pass
-
+    
+    def validate(self) -> None:
+        """Validate that all abstract methods return valid results.
+        
+        This method checks that:
+        - tool_name returns a non-empty string
+        - tool_schema returns a valid dict with required fields (name, description, inputSchema)
+        - tool_name matches tool_schema['name']
+        
+        Raises:
+            ValueError: If any validation check fails
+            
+        Example:
+            handler = CreateFactHandlerImpl()
+            handler.validate()  # Raises ValueError if invalid
+        """
+        # Validate tool_name
+        try:
+            name = self.tool_name
+            if name is None:
+                raise ValueError(f"{self.__class__.__name__}.tool_name returned None")
+            if not isinstance(name, str):
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_name returned {type(name).__name__}, "
+                    f"expected str"
+                )
+            if not name.strip():
+                raise ValueError(f"{self.__class__.__name__}.tool_name returned empty string")
+        except Exception as e:
+            if isinstance(e, ValueError):
+                raise
+            raise ValueError(
+                f"{self.__class__.__name__}.tool_name raised {type(e).__name__}: {e}"
+            ) from e
+        
+        # Validate tool_schema
+        try:
+            schema = self.tool_schema
+            if schema is None:
+                raise ValueError(f"{self.__class__.__name__}.tool_schema returned None")
+            if not isinstance(schema, dict):
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_schema returned {type(schema).__name__}, "
+                    f"expected dict"
+                )
+            
+            # Check required fields
+            if "name" not in schema:
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_schema missing required field 'name'"
+                )
+            if not isinstance(schema["name"], str) or not schema["name"].strip():
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_schema['name'] must be a non-empty string"
+                )
+            
+            if "description" not in schema:
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_schema missing required field 'description'"
+                )
+            if not isinstance(schema["description"], str):
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_schema['description'] must be a string"
+                )
+            
+            if "inputSchema" not in schema:
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_schema missing required field 'inputSchema'"
+                )
+            if not isinstance(schema["inputSchema"], dict):
+                raise ValueError(
+                    f"{self.__class__.__name__}.tool_schema['inputSchema'] must be a dict"
+                )
+            
+            # Validate that tool_name matches schema name
+            if schema["name"] != name:
+                raise ValueError(
+                    f"{self.__class__.__name__}: tool_name '{name}' does not match "
+                    f"tool_schema['name'] '{schema['name']}'"
+                )
+        except Exception as e:
+            if isinstance(e, ValueError):
+                raise
+            raise ValueError(
+                f"{self.__class__.__name__}.tool_schema raised {type(e).__name__}: {e}"
+            ) from e

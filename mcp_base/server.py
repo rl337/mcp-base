@@ -10,7 +10,7 @@ import json
 
 from pyiv import Injector, Config
 
-from mcp_base.handler import IMcpToolHandler, TextContent
+from mcp_base.handler import McpToolHandler, TextContent
 from mcp_base.metrics import record_http_request, get_metrics, get_metrics_content_type, get_metrics_collector
 from mcp_base.tracing import setup_tracing, instrument_fastapi, get_tracing_collector
 
@@ -26,7 +26,7 @@ class McpServerBase:
     
     Example:
         from fastapi import FastAPI
-        from mcp_base import McpServerBase, IMcpToolHandler
+        from mcp_base import McpServerBase, McpToolHandler
         from pyiv import get_injector
         
         app = FastAPI()
@@ -35,7 +35,7 @@ class McpServerBase:
         mcp_server = McpServerBase(
             app=app,
             tool_package="my_service.mcp.handlers",
-            interface=IMcpToolHandler,
+            interface=McpToolHandler,
             injector=injector,
             base_path="/v1/mcp/tools"
         )
@@ -45,10 +45,10 @@ class McpServerBase:
         self,
         app: FastAPI,
         tool_package: str,
-        interface: Type[IMcpToolHandler],
+        interface: Type[McpToolHandler],
         injector: Injector,
         base_path: str = "/v1/mcp/tools",
-        handler_registry: Optional[Dict[str, Type[IMcpToolHandler]]] = None,
+            handler_registry: Optional[Dict[str, Type[McpToolHandler]]] = None,
         metrics_collector: Optional[Any] = None,  # MetricsCollector
         tracing_collector: Optional[Any] = None,  # TracingCollector
         enable_observability: bool = True
@@ -58,7 +58,7 @@ class McpServerBase:
         Args:
             app: FastAPI application
             tool_package: Package path where handlers are defined (for documentation)
-            interface: Interface class for handlers (e.g., IMcpToolHandler)
+            interface: Interface class for handlers (e.g., McpToolHandler)
             injector: Configured pyiv injector
             base_path: Base path for MCP routes
             handler_registry: Optional manual registry of handler classes by tool name.
@@ -91,7 +91,7 @@ class McpServerBase:
         # Register routes
         self._register_routes()
     
-    def _discover_handlers(self) -> Dict[str, Type[IMcpToolHandler]]:
+    def _discover_handlers(self) -> Dict[str, Type[McpToolHandler]]:
         """Discover all handlers from the injector configuration.
         
         This method attempts to discover handlers in two ways:
@@ -420,7 +420,7 @@ class McpServerBase:
     
     def _get_tool_schema(
         self,
-        handler_class: Type[IMcpToolHandler],
+        handler_class: Type[McpToolHandler],
         tool_name: str
     ) -> dict[str, Any]:
         """Extract tool schema from handler class.

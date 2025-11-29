@@ -32,12 +32,12 @@ class CreateFactRequest(BaseModel):
 ### 2. Define Handler
 
 ```python
-from mcp_base import IMcpToolHandler, validate_request, serialize_model
+from mcp_base import McpToolHandler, validate_request, serialize_model
 from mcp.types import TextContent
 from typing import Any
 import json
 
-class CreateFactHandler(IMcpToolHandler):
+class CreateFactHandlerImpl(McpToolHandler):
     """Handler for create_fact tool."""
     
     def __init__(self, fact_service: FactService):
@@ -80,14 +80,14 @@ class CreateFactHandler(IMcpToolHandler):
 
 ```python
 from pyiv import Config, get_injector, SingletonType
-from mcp_base import IMcpToolHandler
+from mcp_base import McpToolHandler
 
 class MyConfig(Config):
     def configure(self):
         # Register handlers manually (or use ReflectionConfig when available)
         self.register(
-            IMcpToolHandler,
-            CreateFactHandler,
+            McpToolHandler,
+            CreateFactHandlerImpl,
             singleton_type=SingletonType.SINGLETON
         )
 ```
@@ -106,7 +106,7 @@ injector = get_injector(MyConfig)
 mcp_server = McpServerBase(
     app=app,
     tool_package="my_service.mcp.handlers",
-    interface=IMcpToolHandler,
+    interface=McpToolHandler,
     injector=injector,
     base_path="/v1/mcp/tools"
 )
@@ -201,7 +201,7 @@ tracing = TestTracingCollector()
 mcp_server = McpServerBase(
     app=app,
     tool_package="my_service.handlers",
-    interface=IMcpToolHandler,
+    interface=McpToolHandler,
     injector=injector,
     metrics_collector=metrics,
     tracing_collector=tracing
@@ -235,7 +235,21 @@ async def handle(self, arguments: dict[str, Any], **kwargs) -> list[TextContent]
         ...
 ```
 
-The type hints in `IMcpToolHandler.handle()` guide agents to implement tracing spans.
+The type hints in `McpToolHandler.handle()` guide agents to implement tracing spans.
+
+### Handler Validation
+
+Handlers can be validated to ensure they implement the interface correctly:
+
+```python
+handler = CreateFactHandlerImpl()
+handler.validate()  # Raises ValueError if invalid
+```
+
+The validation checks:
+- `tool_name` returns a non-empty string
+- `tool_schema` returns a valid dict with required fields (name, description, inputSchema)
+- `tool_name` matches `tool_schema['name']`
 
 ## License
 

@@ -113,7 +113,7 @@ async def handle_create_fact(
 
 ```
 mcp_base/
-├── handler.py          # IMcpToolHandler interface
+├── handler.py          # McpToolHandler interface
 ├── server.py           # McpServerBase class
 ├── request_models.py   # Base request model utilities
 ├── serializers.py      # Base serialization helpers
@@ -123,7 +123,7 @@ mcp_base/
 ## Handler Pattern
 
 ```python
-class CreateFactHandler(IMcpToolHandler):
+class CreateFactHandlerImpl(McpToolHandler):
     """Handler for create_fact tool."""
     
     def __init__(self, service_factory: ServiceFactory):

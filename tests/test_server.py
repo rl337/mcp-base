@@ -6,10 +6,10 @@ from fastapi.testclient import TestClient
 from typing import Any
 
 from pyiv import Config, get_injector, SingletonType
-from mcp_base import McpServerBase, IMcpToolHandler, TextContent
+from mcp_base import McpServerBase, McpToolHandler, TextContent
 
 
-class EchoHandler(IMcpToolHandler):
+class EchoHandlerImpl(McpToolHandler):
     """Echo handler for testing."""
     
     @property
@@ -40,8 +40,8 @@ class TestConfig(Config):
     
     def configure(self):
         self.register(
-            IMcpToolHandler,
-            EchoHandler,
+            McpToolHandler,
+            EchoHandlerImpl,
             singleton_type=SingletonType.SINGLETON
         )
 
@@ -55,7 +55,7 @@ def app():
     mcp_server = McpServerBase(
         app=app,
         tool_package="tests.test_server",
-        interface=IMcpToolHandler,
+        interface=McpToolHandler,
         injector=injector,
         base_path="/v1/mcp/tools"
     )
@@ -136,12 +136,12 @@ def test_execute_tool_with_registry():
     injector = get_injector(TestConfig)
     
     # Manual registry
-    handler_registry = {"echo": EchoHandler}
+    handler_registry = {"echo": EchoHandlerImpl}
     
     mcp_server = McpServerBase(
         app=app,
         tool_package="tests",
-        interface=IMcpToolHandler,
+        interface=McpToolHandler,
         injector=injector,
         base_path="/v1/mcp/tools",
         handler_registry=handler_registry
