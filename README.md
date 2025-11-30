@@ -1,5 +1,9 @@
 # MCP Base Framework
 
+[![CI](https://github.com/rl337/mcp-base/actions/workflows/ci.yml/badge.svg)](https://github.com/rl337/mcp-base/actions/workflows/ci.yml)
+
+**Version:** 0.1.0
+
 A dependency-injected, reflection-based framework for building MCP (Model Context Protocol) services that dramatically reduces boilerplate code by automatically discovering and routing tool handlers.
 
 ## Features
