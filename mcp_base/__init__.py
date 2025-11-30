@@ -42,7 +42,7 @@ try:
 except ImportError:
     _TEST_AVAILABLE = False
 
-__version__ = "0.1.1"  # Keep in sync with pyproject.toml
+__version__ = "0.1.2"  # Keep in sync with pyproject.toml
 __all__ = [
     "McpToolHandler",
     "McpServerBase",
