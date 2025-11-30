@@ -6,6 +6,16 @@
 
 A dependency-injected, reflection-based framework for building MCP (Model Context Protocol) services that dramatically reduces boilerplate code by automatically discovering and routing tool handlers.
 
+## Versioning
+
+This project uses **automatic semantic versioning**:
+
+- **Regular commits to main**: Automatically bumps patch version (0.1.0 → 0.1.1)
+- **Merge commits to main**: Automatically bumps minor version (0.1.0 → 0.2.0)
+- **Major versions**: Must be bumped manually using `poetry version major`
+
+Version bumps happen automatically via GitHub Actions on every push to main. Both `pyproject.toml` and `mcp_base/__init__.py` are updated automatically.
+
 ## Features
 
 - **Automatic Handler Discovery**: Uses pyiv reflection to discover handler classes in packages
