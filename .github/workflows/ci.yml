@@ -58,7 +58,7 @@ jobs:
             chmod +x run_checks.sh
             ./run_checks.sh
           else
-            echo "Running basic checks..."
+            echo "No run_checks.sh found, running basic checks..."
             poetry run pytest --cov=mcp_base --cov-report=xml --cov-report=html --cov-report=term-missing
             poetry run black --check mcp_base/ tests/ || true
             poetry run ruff check mcp_base/ tests/ || true
@@ -86,4 +86,3 @@ jobs:
         run: |
           poetry build
           echo "✓ Distribution packages built successfully"
-
