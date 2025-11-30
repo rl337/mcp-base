@@ -64,3 +64,4 @@ def get_schema_from_model(model_class: Type[BaseModel]) -> dict[str, Any]:
     """
     return model_class.model_json_schema()
 
+

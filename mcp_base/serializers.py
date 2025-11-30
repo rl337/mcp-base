@@ -69,3 +69,4 @@ def serialize_uuid(uuid_obj: Any) -> str:
     """
     return str(uuid_obj)
 
+

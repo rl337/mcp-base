@@ -274,3 +274,4 @@ class TestTracingCollector(TracingCollector):
         """
         return [s for s in self.spans if s.status == "ERROR"]
 
+
