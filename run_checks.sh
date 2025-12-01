@@ -36,16 +36,16 @@ run_check() {
 }
 
 # 1. Black formatting check
-run_check "Black formatting" poetry run black --check --diff mcp_base/ tests/
+run_check "Black formatting" black --check --diff mcp_base/ tests/
 
 # 2. Ruff linting check
-run_check "Ruff linting" poetry run ruff check mcp_base/ tests/
+run_check "Ruff linting" ruff check mcp_base/ tests/
 
 # 3. Pytest with coverage
-run_check "Pytest with coverage" poetry run pytest --cov=mcp_base --cov-report=xml --cov-report=html --cov-report=term-missing tests/
+run_check "Pytest with coverage" pytest --cov=mcp_base --cov-report=xml --cov-report=html --cov-report=term-missing tests/
 
 # 4. mypy type checking
-run_check "mypy type checking" poetry run mypy mcp_base/
+run_check "mypy type checking" mypy mcp_base/
 
 echo ""
 echo "=========================================="
@@ -56,4 +56,5 @@ else
     echo -e "${RED}Some checks failed. Please fix the issues above.${NC}"
     exit 1
 fi
+
 
