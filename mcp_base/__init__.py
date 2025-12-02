@@ -24,6 +24,29 @@ from mcp_base.tracing import (
     setup_tracing,
     trace_span,
 )
+from mcp_base.user_agent import (
+    detect_device_type,
+    get_view_context,
+    is_desktop_device,
+    is_mobile_device,
+)
+from mcp_base.widget_renderer import WidgetRenderer
+from mcp_base.widget_server import WidgetServer
+from mcp_base.widget_views import (
+    DefaultWidgetView,
+    DesktopWidgetView,
+    DetailDesktopView,
+    DetailMobileView,
+    DetailWidgetView,
+    ListDesktopView,
+    ListMobileView,
+    ListWidgetView,
+    MobileWidgetView,
+    ViewContext,
+    ViewRequest,
+    WidgetView,
+)
+from mcp_base.widgets import WidgetAction, WidgetCard, WidgetProvider
 
 # Test utilities (for testing)
 try:
@@ -69,6 +92,30 @@ __all__ = [
     "set_span_status",
     "setup_tracing",
     "instrument_fastapi",
+    # Widgets
+    "WidgetCard",
+    "WidgetAction",
+    "WidgetProvider",
+    "WidgetServer",
+    "WidgetRenderer",
+    # Widget Views
+    "WidgetView",
+    "ViewContext",
+    "ViewRequest",
+    "DefaultWidgetView",
+    "ListWidgetView",
+    "ListMobileView",
+    "ListDesktopView",
+    "DetailWidgetView",
+    "DetailMobileView",
+    "DetailDesktopView",
+    "MobileWidgetView",
+    "DesktopWidgetView",
+    # User Agent Detection
+    "is_mobile_device",
+    "is_desktop_device",
+    "detect_device_type",
+    "get_view_context",
 ]
 
 # Add test utilities if available
