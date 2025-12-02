@@ -10,18 +10,30 @@ on:
 jobs:
   bump-version:
     runs-on: ubuntu-latest
-    # Only run if CI workflow succeeded
-    if: github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'master')
+    # Only run if CI workflow succeeded on main/master branch
+    # This ensures versions are only bumped for successful builds, not failed ones
+    if: |
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'master')
     
     permissions:
       contents: write
     
     steps:
+      - name: Verify CI succeeded
+        run: |
+          if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+            echo "❌ CI workflow did not succeed. Conclusion: ${{ github.event.workflow_run.conclusion }}"
+            exit 1
+          fi
+          echo "✅ CI workflow succeeded, proceeding with version bump"
+      
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.workflow_run.head_branch }}
+          # Checkout the exact commit that passed CI
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -123,10 +135,14 @@ jobs:
         run: |
           NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
           BUMP_TYPE="${{ steps.new_version.outputs.bump_type }}"
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          
+          # We're in detached HEAD state, so checkout the branch
+          git checkout -b $BRANCH || git checkout $BRANCH
           
           git add pyproject.toml mcp_base/__init__.py
           git commit -m "chore: auto-bump version to ${NEW_VERSION} (${BUMP_TYPE}) [skip ci]"
-          git push origin ${{ github.ref_name }}
+          git push origin $BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

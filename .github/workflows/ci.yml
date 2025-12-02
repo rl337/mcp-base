@@ -43,10 +43,12 @@ jobs:
             ./run_checks.sh
           else
             echo "No run_checks.sh found, running basic checks..."
+            # Tests must pass for CI to succeed
             pytest --cov=mcp_base --cov-report=xml --cov-report=html --cov-report=term-missing
-            black --check mcp_base/ tests/ || true
-            ruff check mcp_base/ tests/ || true
-            mypy mcp_base/ || true
+            # Linting/formatting checks (warnings only, don't fail CI)
+            black --check mcp_base/ tests/ || echo "⚠ Black check failed (non-blocking)"
+            ruff check mcp_base/ tests/ || echo "⚠ Ruff check failed (non-blocking)"
+            mypy mcp_base/ || echo "⚠ MyPy check failed (non-blocking)"
           fi
 
       - name: Upload coverage to Codecov
