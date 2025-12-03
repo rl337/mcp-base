@@ -1,6 +1,5 @@
 """Tests for widget renderer with dependency injection."""
 
-
 from pyiv import Config, SingletonType, get_injector
 
 from mcp_base.widget_renderer import WidgetRenderer

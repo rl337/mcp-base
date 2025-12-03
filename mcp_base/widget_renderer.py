@@ -126,9 +126,14 @@ class WidgetRenderer:
                     if concrete and issubclass(concrete, WidgetView):
                         try:
                             view = self.injector.inject(concrete)
-                            if isinstance(view, WidgetView) and view.view_context == resolved_context:
+                            if (
+                                isinstance(view, WidgetView)
+                                and view.view_context == resolved_context
+                            ):
                                 self._view_cache[resolved_context] = view
-                                logger.debug(f"Found registered view for context: {resolved_context}")
+                                logger.debug(
+                                    f"Found registered view for context: {resolved_context}"
+                                )
                                 return view
                         except Exception as e:
                             logger.debug(f"Could not inject view {concrete}: {e}")
@@ -156,7 +161,9 @@ class WidgetRenderer:
                         view = self.injector.inject(view_class)
                         if isinstance(view, WidgetView) and view.view_context == resolved_context:
                             self._view_cache[resolved_context] = view
-                            logger.debug(f"Found view via reflection for context: {resolved_context}")
+                            logger.debug(
+                                f"Found view via reflection for context: {resolved_context}"
+                            )
                             return view
                     except Exception as e:
                         logger.debug(f"Could not inject view {view_class}: {e}")

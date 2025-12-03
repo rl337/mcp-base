@@ -1,6 +1,5 @@
 """Tests for widget view system."""
 
-
 import pytest
 
 from mcp_base.widget_views import (
