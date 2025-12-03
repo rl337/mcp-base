@@ -160,7 +160,7 @@ class DefaultWidgetView(WidgetView):
                     <div class="widget-meta">{meta_html}</div>
                 </div>
             </div>
-            <div class="widget-content">{widget.content}</div>
+            <div class="widget-content">{self._escape_html(widget.content)}</div>
             {actions_html}
         </div>
         """

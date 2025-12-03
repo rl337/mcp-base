@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 
 from fastapi import FastAPI
-from pyiv import Config, get_injector
+from pyiv import Config, SingletonType, get_injector
 
 from mcp_base import (
     McpServerBase,
@@ -118,10 +118,10 @@ class ExampleConfig(Config):
 
     def configure(self):
         # Register widget provider as singleton
-        self.bind(WidgetProvider, MyServiceWidgetProvider, singleton=True)
+        self.register(WidgetProvider, MyServiceWidgetProvider, singleton_type=SingletonType.SINGLETON)
 
         # Register handler - it will get the widget provider injected
-        self.bind(McpToolHandler, EchoHandler, singleton=True)
+        self.register(McpToolHandler, EchoHandler, singleton_type=SingletonType.SINGLETON)
 
 
 # Example: Setting up the server

@@ -5,7 +5,7 @@ from datetime import datetime
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from pyiv import Config, get_injector
+from pyiv import Config, SingletonType, get_injector
 
 from mcp_base.widget_server import WidgetServer
 from mcp_base.widget_views import ListWidgetView, WidgetView
@@ -48,8 +48,8 @@ class TestConfig(Config):
     """Test configuration."""
 
     def configure(self):
-        self.bind(WidgetProvider, TestWidgetProvider, singleton=True)
-        self.bind(WidgetView, ListWidgetView, singleton=True)
+        self.register(WidgetProvider, TestWidgetProvider, singleton_type=SingletonType.SINGLETON)
+        self.register(WidgetView, ListWidgetView, singleton_type=SingletonType.SINGLETON)
 
 
 @pytest.fixture
