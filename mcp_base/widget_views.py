@@ -251,19 +251,20 @@ class MobileWidgetView(DefaultWidgetView):
         if widget.actions:
             # Mobile: show only primary action, others in menu
             primary_action = widget.actions[0]
+            menu_button = ""
+            if len(widget.actions) > 1:
+                menu_button = (
+                    '<button class="action-btn menu" onclick="showActionMenu(\''
+                    + widget.id
+                    + "\')">⋯</button>"
+                )
             actions_html = f"""
             <div class="widget-actions mobile">
                 <button class="action-btn primary"
                         onclick="handleWidgetAction('{widget.id}', 0, {self._action_to_json(primary_action)})">
                     {self._escape_html(primary_action.label)}
                 </button>
-                {(
-                    '<button class="action-btn menu" onclick="showActionMenu(\''
-                    + widget.id
-                    + '\')">⋯</button>'
-                    if len(widget.actions) > 1
-                    else ''
-                )}
+                {menu_button}
             </div>
             """
 
@@ -311,19 +312,20 @@ class ListMobileView(DefaultWidgetView):
         actions_html = ""
         if widget.actions:
             primary_action = widget.actions[0]
+            menu_button = ""
+            if len(widget.actions) > 1:
+                menu_button = (
+                    '<button class="action-btn menu" onclick="showActionMenu(\''
+                    + widget.id
+                    + "\')">⋯</button>"
+                )
             actions_html = f"""
             <div class="widget-actions mobile">
                 <button class="action-btn primary"
                         onclick="handleWidgetAction('{widget.id}', 0, {self._action_to_json(primary_action)})">
                     {self._escape_html(primary_action.label)}
                 </button>
-                {(
-                    '<button class="action-btn menu" onclick="showActionMenu(\''
-                    + widget.id
-                    + '\')">⋯</button>'
-                    if len(widget.actions) > 1
-                    else ''
-                )}
+                {menu_button}
             </div>
             """
 
