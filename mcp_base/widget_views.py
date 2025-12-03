@@ -254,9 +254,11 @@ class MobileWidgetView(DefaultWidgetView):
             menu_button = ""
             if len(widget.actions) > 1:
                 menu_button = (
-                    '<button class="action-btn menu" onclick="showActionMenu(\''
+                    '<button class="action-btn menu" onclick="showActionMenu('
+                    + "'"
                     + widget.id
-                    + "\')">⋯</button>"
+                    + "'"
+                    + ')">⋯</button>'
                 )
             actions_html = f"""
             <div class="widget-actions mobile">
@@ -315,9 +317,11 @@ class ListMobileView(DefaultWidgetView):
             menu_button = ""
             if len(widget.actions) > 1:
                 menu_button = (
-                    '<button class="action-btn menu" onclick="showActionMenu(\''
+                    '<button class="action-btn menu" onclick="showActionMenu('
+                    + "'"
                     + widget.id
-                    + "\')">⋯</button>"
+                    + "'"
+                    + ')">⋯</button>'
                 )
             actions_html = f"""
             <div class="widget-actions mobile">
