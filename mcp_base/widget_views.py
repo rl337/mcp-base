@@ -257,7 +257,13 @@ class MobileWidgetView(DefaultWidgetView):
                         onclick="handleWidgetAction('{widget.id}', 0, {self._action_to_json(primary_action)})">
                     {self._escape_html(primary_action.label)}
                 </button>
-                {('<button class="action-btn menu" onclick="showActionMenu(\'' + widget.id + '\')">⋯</button>' if len(widget.actions) > 1 else '')}
+                {(
+                    '<button class="action-btn menu" onclick="showActionMenu(\''
+                    + widget.id
+                    + '\')">⋯</button>'
+                    if len(widget.actions) > 1
+                    else ''
+                )}
             </div>
             """
 
@@ -311,7 +317,13 @@ class ListMobileView(DefaultWidgetView):
                         onclick="handleWidgetAction('{widget.id}', 0, {self._action_to_json(primary_action)})">
                     {self._escape_html(primary_action.label)}
                 </button>
-                {('<button class="action-btn menu" onclick="showActionMenu(\'' + widget.id + '\')">⋯</button>' if len(widget.actions) > 1 else '')}
+                {(
+                    '<button class="action-btn menu" onclick="showActionMenu(\''
+                    + widget.id
+                    + '\')">⋯</button>'
+                    if len(widget.actions) > 1
+                    else ''
+                )}
             </div>
             """
 
