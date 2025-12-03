@@ -62,7 +62,7 @@ try:
 except ImportError:
     _TEST_AVAILABLE = False
 
-__version__ = "0.1.5"  # Keep in sync with pyproject.toml
+__version__ = "0.1.6"  # Keep in sync with pyproject.toml
 __all__ = [
     "McpToolHandler",
     "TextContent",

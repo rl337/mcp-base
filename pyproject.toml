@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mcp-base"
-version = "0.1.5"
+version = "0.1.6"
 description = "Base framework for building MCP services with automatic handler discovery"
 requires-python = ">=3.11"
 license = {text = "MIT"}
